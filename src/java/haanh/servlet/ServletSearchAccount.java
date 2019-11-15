@@ -39,34 +39,18 @@ public class ServletSearchAccount extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         String url = UrlConstants.PAGE_LOGIN;
+        boolean activeSession = ServletCenter.checkSession(request);
 
         try {
-            boolean activeSession = ServletCenter.checkSession(request);
             if (activeSession) {
+                boolean activeAdmin = ServletCenter.checkSessionAdmin(request);
                 url = UrlConstants.PAGE_HOME;
-                String searchValue = request.getParameter("searchValue");
-                String roleId = request.getParameter("roleId");
                 
-                UserDAO userDao = new UserDAO();
-                RoleDAO roleDao = new RoleDAO();
-                List<UserDTO> list = null;
-                Map<String, String> map = null;
-                UserDTO user = ServletCenter.getCurrentUser(request);
-                
-                searchValue = searchValue.trim();
-                if (searchValue.length() > 0) {
-//                    System.out.println("searchValue = " + searchValue);
-                    System.out.println("userId = " + user.getUserId());
-                    if (roleId != null && roleId.length() > 0) {
-                        list = userDao.findUserByFullnameAndRoleId(searchValue, roleId, user.getUserId());
-                    } else {
-                        list = userDao.findUserByFullname(searchValue, user.getUserId());
-                    }
+                if (activeAdmin) {
+                    processAdminRequest(request, url);
+                } else {
+                    //Non Admin Search
                 }
-                map =  roleDao.getAllNonAdminRoles();
-
-                request.setAttribute("users", list);
-                request.setAttribute("roles", map);
             }
         } catch (ClassNotFoundException | SQLException ex) {
             log(ex.getMessage(), ex);
@@ -116,4 +100,32 @@ public class ServletSearchAccount extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private void processAdminRequest(HttpServletRequest request, String url) throws ClassNotFoundException, SQLException {
+        String searchValue = request.getParameter("searchValue");
+        String roleId = request.getParameter("roleSearched");
+
+        UserDAO userDao = new UserDAO();
+        RoleDAO roleDao = new RoleDAO();
+        List<UserDTO> list = null;
+        Map<String, String> map;
+        String msg = null;
+        
+        UserDTO user = ServletCenter.getCurrentUser(request);
+        searchValue = searchValue.trim();
+        
+        if (searchValue.length() > 0) {
+            if (roleId != null && roleId.length() > 0) {
+                list = userDao.findUserByFullnameAndRoleId(searchValue, roleId, user.getUserId());
+            } else {
+                list = userDao.findUserByFullname(searchValue, user.getUserId());
+            }
+        } else {
+            msg = "Your search did not match any result";
+        }
+        map = roleDao.getAllNonAdminRoles();
+
+        request.setAttribute("users", list);
+        request.setAttribute("roles", map);
+        request.setAttribute(UrlConstants.ATTR_MESSAGE, msg);
+    }
 }

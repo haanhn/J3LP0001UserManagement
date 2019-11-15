@@ -88,10 +88,10 @@ public class UserDAO {
         List<UserDTO> list = new ArrayList<>();
         try {
             String sql = "select UserId, Fullname, Photo, Active, RoleId from [User] "
-                    + "where Fullname like %?% and roleId=?";
+                    + "where Fullname like ? and roleId=?";
             con = DBUtils.getConnection();
             stm = con.prepareStatement(sql);
-            stm.setString(1, searchValue);
+            stm.setString(1, "%" + searchValue + "%");
             stm.setString(2, roleId);
             rs = stm.executeQuery();
             while (rs.next()) {
@@ -111,7 +111,34 @@ public class UserDAO {
         }
         return list;
     }
-
+    
+    public List<UserDTO> findUserByRoleId(String roleId, String userId) throws ClassNotFoundException, SQLException {
+        List<UserDTO> list = new ArrayList<>();
+        try {
+            String sql = "select UserId, Fullname, Photo, Active, RoleId from [User] "
+                    + "where roleId=?";
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setString(1, roleId);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                String id = rs.getString("UserId");
+                if (!id.equals(userId)) {
+                    UserDTO dto = new UserDTO();
+                    dto.setUserId(id);
+                    dto.setFullname(rs.getString("Fullname"));
+                    dto.setPhoto(rs.getString("Photo"));
+                    dto.setActive(rs.getBoolean("Active"));
+                    dto.setRoleId(rs.getString("RoleId"));
+                    list.add(dto);
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return list;
+    }
+    
     //Find all except userId
     public List<UserDTO> findAllUsers(String userId) throws ClassNotFoundException, SQLException {
         List<UserDTO> list = new ArrayList<>();

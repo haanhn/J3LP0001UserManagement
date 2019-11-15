@@ -23,6 +23,7 @@ public class UrlConstants {
     public static final String SERVLET_INSERT_USER = "ServletInsertUser";
     public static final String SERVLET_GET_USER_DETAIL = "ServletGetUserDetail";
     public static final String SERVLET_UPDATE_USER = "ServletUpdateUser";
+    public static final String SERVLET_GET_USERS_BY_ROLE = "ServletGetUsersByRole";
     
     //Urls
     public static final String PAGE_LOGIN = "login.jsp";
@@ -34,6 +35,7 @@ public class UrlConstants {
     //Attributes
     public static final String ATTR_CURRENT_USER = "currentUser";
     public static final String ATTR_USER = "user";
+    public static final String ATTR_USERS = "users";
     public static final String ATTR_ROLES = "roles";
     public static final String ATTR_ERROR = "error";
     public static final String ATTR_MESSAGE = "message";

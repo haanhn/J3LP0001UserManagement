@@ -48,6 +48,10 @@
         <servlet-name>ServletUpdateUser</servlet-name>
         <servlet-class>haanh.servlet.ServletUpdateUser</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletGetUsersByRole</servlet-name>
+        <servlet-class>haanh.servlet.ServletGetUsersByRole</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletCenter</servlet-name>
         <url-pattern>/ServletCenter</url-pattern>
@@ -95,6 +99,10 @@
     <servlet-mapping>
         <servlet-name>ServletUpdateUser</servlet-name>
         <url-pattern>/ServletUpdateUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletGetUsersByRole</servlet-name>
+        <url-pattern>/ServletGetUsersByRole</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

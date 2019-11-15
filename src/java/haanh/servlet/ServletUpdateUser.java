@@ -69,10 +69,10 @@ public class ServletUpdateUser extends HttpServlet {
                 }
             }
         } catch (SQLException | ClassNotFoundException ex) {
-            result = getSQLMessage(ex);
+//            result = getSQLMessage(ex);
             log(ex.getMessage(), ex);
         } catch (Exception ex) {
-            result = getSQLMessage(ex);
+//            result = getSQLMessage(ex);
             log(ex.getMessage(), ex);
         }
     }

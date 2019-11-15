@@ -1,0 +1,39 @@
+/* 
+    Created on : 15-Nov-2019, 09:24:17
+    Author     : HaAnh
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a {
+    color: inherit;
+}
+
+ul {
+    list-style-type: none;
+    text-decoration: none;
+    font-size: 120%;
+}
+
+/******************************
+***********PAGE HOME***********
+*******************************/
+.list-tab-roles li {
+    display: inline-block;
+    padding: 10px 0;
+    margin-right: 20px;
+}
+
+.list-tab-roles li:hover {
+    color: #555;
+}
+.active-user {
+    color: green;
+}
+.inactive-user {
+    color: tomato;
+}

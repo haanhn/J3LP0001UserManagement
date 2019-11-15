@@ -57,7 +57,9 @@ public class ServletCenter extends HttpServlet {
                     url = UrlConstants.SERVLET_GET_USER_DETAIL;
                 } else if (action.equals("Log Out")) {
                     url = UrlConstants.SERVLET_LOG_OUT;
-                } 
+                } else if (action.equals("GetUsersByRole")) {
+                    url = UrlConstants.SERVLET_GET_USERS_BY_ROLE;
+                }
             }
         } else {
             if (action != null && action.equals("Login")) {

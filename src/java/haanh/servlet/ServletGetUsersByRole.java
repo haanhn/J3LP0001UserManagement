@@ -5,16 +5,14 @@
  */
 package haanh.servlet;
 
-import haanh.dao.UserDAO;
 import haanh.dao.RoleDAO;
+import haanh.dao.UserDAO;
 import haanh.dto.UserDTO;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author HaAnh
  */
-public class ServletHome extends HttpServlet {
+public class ServletGetUsersByRole extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,16 +44,14 @@ public class ServletHome extends HttpServlet {
         try {
             if (activeSession) {
                 url = UrlConstants.PAGE_HOME;
+                boolean activeAdmin = ServletCenter.checkSessionAdmin(request);
+                String roleId = request.getParameter("roleSearched");
 
-                UserDAO userDao = new UserDAO();
-                RoleDAO roleDao = new RoleDAO();
-                UserDTO user = ServletCenter.getCurrentUser(request);
-
-                List<UserDTO> list = userDao.findAllUsers(user.getUserId());
-                Map<String, String> map = roleDao.getAllNonAdminRoles();
-
-                request.setAttribute("users", list);
-                request.setAttribute("roles", map);
+                if (activeAdmin) {
+                    processAdminRequest(request, roleId);
+                } else {
+                    //Non Admin Search
+                }
             }
         } catch (ClassNotFoundException | SQLException ex) {
             log(ex.getMessage(), ex);
@@ -63,10 +59,9 @@ public class ServletHome extends HttpServlet {
 
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
-
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -105,4 +100,14 @@ public class ServletHome extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private void processAdminRequest(HttpServletRequest request, String roleId) throws SQLException, ClassNotFoundException {
+        UserDAO dao = new UserDAO();
+        RoleDAO roleDao = new RoleDAO();
+        UserDTO user = ServletCenter.getCurrentUser(request);
+        List<UserDTO> users = dao.findUserByRoleId(roleId, user.getUserId());
+        Map<String, String> roles = roleDao.getAllNonAdminRoles();
+
+        request.setAttribute(UrlConstants.ATTR_USERS, users);
+        request.setAttribute(UrlConstants.ATTR_ROLES, roles);
+    }
 }
