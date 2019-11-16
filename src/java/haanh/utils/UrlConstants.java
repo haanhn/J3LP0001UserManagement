@@ -18,7 +18,7 @@ public class UrlConstants {
     public static final String SERVLET_LOG_OUT = "ServletLogOut";
     public static final String SERVLET_SEARCH_ACCOUNT = "ServletSearchAccount";
     public static final String SERVLET_DELETE_ACCOUNT = "ServletDeleteAccount";
-    public static final String SERVLET_UPDATE_PASSWORD = "ServletUpdatePassword";
+    public static final String SERVLET_CHANGE_PASSWORD = "ServletChangePassword";
     public static final String SERVLET_GET_PAGE_INSERT = "ServletGetPageInsert";
     public static final String SERVLET_INSERT_USER = "ServletInsertUser";
     public static final String SERVLET_GET_USER_DETAIL = "ServletGetUserDetail";
@@ -30,18 +30,24 @@ public class UrlConstants {
     public static final String PAGE_HOME = "index.jsp";
     public static final String PAGE_INSERT_USER = "insert-user.jsp";
     public static final String PAGE_USER_DETAIL = "user-detail.jsp";
+    public static final String PAGE_CHANGE_PASSWORD = "change-password.jsp";
     public static final String PAGE_404 = "page-404.jsp";
+    public static final String PAGE_ERROR = "error.jsp";
     
     //Attributes
     public static final String ATTR_CURRENT_USER = "currentUser";
     public static final String ATTR_USER = "user";
     public static final String ATTR_USERS = "users";
     public static final String ATTR_ROLES = "roles";
+    public static final String ATTR_PARAMS = "params";
+    public static final String ATTR_PHOTO_ITEM = "photoItem";
     public static final String ATTR_ERROR = "error";
     public static final String ATTR_MESSAGE = "message";
+    public static final String ATTR_MESSAGE_USER = "messageUser";
+    public static final String ATTR_MESSAGE_PHOTO = "messagePhoto";
     
     //Errors
-    public static final int ERR_WRONG_OLD_PWD = -3;
+//    public static final int ERR_WRONG_OLD_PWD = -3;
     public static final int ERR_USER_ID_EXISTED = -2;
     
     //Code for validation

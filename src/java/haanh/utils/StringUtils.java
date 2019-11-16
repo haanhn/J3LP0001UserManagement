@@ -25,20 +25,23 @@ public class StringUtils {
 
     public static void main(String[] args) {
         try {
-//            Scanner sc = new Scanner(System.in);
-//            String text = sc.nextLine().trim();
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            MessageDigest digest2 = MessageDigest.getInstance("SHA-256");
+            Scanner sc = new Scanner(System.in);
+            String text = sc.nextLine().trim();
             
-            byte[] h = new String("haanh" ).getBytes();
-            byte[] h2 = new String("haanh" ).getBytes();
-            h = digest.digest(h);
-            h2 = digest2.digest(h2);
-            System.out.println(Base64.getEncoder().encodeToString(h));
-            System.out.println(Base64.getEncoder().encodeToString(h2));
+            System.out.println("Is Photo extension " + checkPhotoExtension(text));
             
-//            byte[] hashedBytes = digest.digest(text.getBytes());
-            StringBuilder sb = new StringBuilder();
+//            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+//            MessageDigest digest2 = MessageDigest.getInstance("SHA-256");
+//            
+//            byte[] h = new String("haanh" ).getBytes();
+//            byte[] h2 = new String("haanh" ).getBytes();
+//            h = digest.digest(h);
+//            h2 = digest2.digest(h2);
+//            System.out.println(Base64.getEncoder().encodeToString(h));
+//            System.out.println(Base64.getEncoder().encodeToString(h2));
+//            
+////            byte[] hashedBytes = digest.digest(text.getBytes());
+//            StringBuilder sb = new StringBuilder();
 //            for (byte b : hashedBytes) {
 //                int unsignedByte = b & 0xFF;
 //                int leftBits = unsignedByte >>> 4;
@@ -50,7 +53,7 @@ public class StringUtils {
 //                // 0100 1101 & 0000 1111 = 1101 0000 
 //                sb.append(BYTE_TO_HEX[leftBits]).append(BYTE_TO_HEX[rightBits]);
 //            }
-            String hashedString = sb.toString();
+//            String hashedString = sb.toString();
             
 //            System.out.println(Base64.getEncoder().encodeToString(hashedBytes));
             
@@ -93,5 +96,11 @@ public class StringUtils {
         }
     }
 
-    
+    private static boolean checkPhotoExtension(String str) {
+        boolean valid = false;
+        if (str.endsWith(".png") || str.endsWith(".jpg") || str.endsWith(".jpeg")){
+            valid = true;
+        }
+        return valid;
+    }
 }

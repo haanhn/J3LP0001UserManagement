@@ -47,25 +47,42 @@ public class DataValidationUtils {
         return code;
     }
 
-    public static int validateEmail(String email) {
-        int code = UrlConstants.DATA_VALID;
+//    public static int validateEmail(String email) {
+//        boolean valid = validateEmailFormat(email);
+//        if (valid) {
+//            
+//        } else {
+//            
+//        }
+//        UserDAO dao = new UserDAO();
+//        boolean existed = dao.checkEmailExist(email);
+//        
+//        return code;
+//    }
+    
+    public static boolean validateEmailFormat(String email) {
+        boolean valid = false;
         String regex = "[a-zA-Z0-9]{5,30}@[a-zA-Z0-9]{1,20}(\\.[a-zA-Z0-9]{1,20}){1,2}";
         Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(email);
-        if (!matcher.matches()) {
-            code = UrlConstants.DATA_INVALID;
+        if (matcher.matches()) {
+            valid = true;
         }
-        return code;
+        return valid;
     }
 
-    public static int validatePhone(String phone) {
-        int code = UrlConstants.DATA_VALID;
+    public static boolean validatePhoneFormat(String phone) {
         String regex = "[0-9]{8,15}";
         Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(phone);
-        if (!matcher.matches()) {
-            code = UrlConstants.DATA_INVALID;
+        return matcher.matches();
+    }
+    
+    public static boolean validatePhotoExtension(String str) {
+        boolean valid = false;
+        if (str.endsWith(".png") || str.endsWith(".jpg") || str.endsWith(".jpeg")){
+            valid = true;
         }
-        return code;
+        return valid;
     }
 }

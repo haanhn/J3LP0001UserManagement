@@ -126,17 +126,17 @@ public class ServletUpdateUser extends HttpServlet {
             err = true;
         }
         //validate email
-        code = DataValidationUtils.validateEmail(email);
-        if (code == UrlConstants.DATA_INVALID) {
-            error.setEmailErr("Email format abc@xy.xy[.xy]");
-            err = true;
-        }
+//        code = DataValidationUtils.validateEmailFormat(email);
+//        if (code == UrlConstants.DATA_INVALID) {
+//            error.setEmailErr("Email format abc@xy.xy[.xy]");
+//            err = true;
+//        }
         //validate phone
-        code = DataValidationUtils.validatePhone(phone);
-        if (code == UrlConstants.DATA_INVALID) {
-            error.setPhoneErr("Phone allows digits length 8-15");
-            err = true;
-        }
+//        code = DataValidationUtils.validatePhoneFormat(phone);
+//        if (code == UrlConstants.DATA_INVALID) {
+//            error.setPhoneErr("Phone allows digits length 8-15");
+//            err = true;
+//        }
         if (!err) {
             error = null;
         }

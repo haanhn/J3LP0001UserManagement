@@ -1,6 +1,6 @@
 <%-- 
-    Document   : page-404
-    Created on : 13-Nov-2019, 15:26:38
+    Document   : error
+    Created on : 16-Nov-2019, 15:51:38
     Author     : HaAnh
 --%>
 
@@ -9,10 +9,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>User Management</title>
     </head>
     <body>
-        <h1>404 not found</h1>
-        <img src="PAY-New-Hollywood-couple-Taylor-Swift-and-Tom-Hiddleston.jpg"/>
+        <h1>Error Page</h1>
     </body>
 </html>

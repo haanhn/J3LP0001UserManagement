@@ -1,6 +1,6 @@
 <%-- 
-    Document   : page-404
-    Created on : 13-Nov-2019, 15:26:38
+    Document   : profile-heading
+    Created on : 15-Nov-2019, 15:29:55
     Author     : HaAnh
 --%>
 
@@ -12,7 +12,9 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>404 not found</h1>
-        <img src="PAY-New-Hollywood-couple-Taylor-Swift-and-Tom-Hiddleston.jpg"/>
+        <h1>My Profile</h1>
+        <form action="ServletCenter" method="POST">
+            <input type="submit" value="Change My Password" name="action" />
+        </form>
     </body>
 </html>

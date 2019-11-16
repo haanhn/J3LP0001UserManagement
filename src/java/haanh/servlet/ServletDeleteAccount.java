@@ -9,8 +9,6 @@ import haanh.dao.UserDAO;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -38,28 +36,21 @@ public class ServletDeleteAccount extends HttpServlet {
 
         String url = UrlConstants.PAGE_LOGIN;
         boolean activeSession = ServletCenter.checkSession(request);
-        String searchValue = request.getParameter("searchValue");
-        
+
         try {
             if (activeSession) {
-                url = UrlConstants.SERVLET_HOME;
-                if (searchValue != null && searchValue.trim().length() > 0) {
-                    url = UrlConstants.SERVLET_SEARCH_ACCOUNT;
-                }
-                String userId = request.getParameter("userId");
+                boolean activeAdmin = ServletCenter.checkSessionAdmin(request);
 
-                UserDAO dao = new UserDAO();
-                boolean success = dao.deleteUserById(userId);
-
-                String message = "Delete unsuccessfylly";
-                if (success) {
-                    message = "Delete successfully!";
+                if (activeAdmin) {
+                    url = UrlConstants.SERVLET_GET_USERS_BY_ROLE;
+                    processAdminRequest(request);
+                } else {
+                    //Non Admin
+                    url = UrlConstants.PAGE_404;
                 }
-                request.setAttribute("message", message);
             }
-
         } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(ServletDeleteAccount.class.getName()).log(Level.SEVERE, null, ex);
+            log(ex.getMessage(), ex);
         }
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
@@ -105,4 +96,16 @@ public class ServletDeleteAccount extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private void processAdminRequest(HttpServletRequest request) throws SQLException, ClassNotFoundException {
+        String userId = request.getParameter("userId");
+
+        UserDAO dao = new UserDAO();
+        boolean success = dao.deleteUserById(userId);
+
+        String message = "Delete unsuccessfylly";
+        if (success) {
+            message = "Delete successfully!";
+        }
+        request.setAttribute("message", message);
+    }
 }

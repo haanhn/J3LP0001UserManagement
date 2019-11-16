@@ -5,7 +5,6 @@
  */
 package haanh.dao;
 
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 import haanh.dto.UserDTO;
 import haanh.utils.DBUtils;
 import java.sql.Connection;
@@ -14,8 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -182,6 +179,40 @@ public class UserDAO {
         return existed;
     }
 
+    public boolean checkEmailExist(String email) throws ClassNotFoundException, SQLException {
+        boolean existed = false;
+        try {
+            String sql = "select UserId from [User] where Email=?";
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setString(1, email);
+            rs = stm.executeQuery();
+            if (rs.next()) {
+                existed = true;
+            }
+        } finally {
+            closeConnection();
+        }
+        return existed;
+    }
+    
+    public boolean checkPhoneExist(String phone) throws ClassNotFoundException, SQLException {
+        boolean existed = false;
+        try {
+            String sql = "select UserId from [User] where Phone=?";
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setString(1, phone);
+            rs = stm.executeQuery();
+            if (rs.next()) {
+                existed = true;
+            }
+        } finally {
+            closeConnection();
+        }
+        return existed;
+    }
+    
     public UserDTO getUserByUserId(String userId) throws ClassNotFoundException, SQLException {
         UserDTO dto = null;
         try {
@@ -206,8 +237,8 @@ public class UserDAO {
         return dto;
     }
 
-    public int insertUser(UserDTO dto) throws SQLException, ClassNotFoundException {
-        int result = DBUtils.CODE_FAILED;
+    public boolean insertUser(UserDTO dto) throws SQLException, ClassNotFoundException {
+        boolean result = false;
         try {
             con = DBUtils.getConnection();
             String sql = "insert into [User](UserId, Password, Fullname, Email, Phone, Photo, Active, RoleId) "
@@ -223,7 +254,7 @@ public class UserDAO {
             stm.setString(8, dto.getRoleId());
             int row = stm.executeUpdate();
             if (row > 0) {
-                result = DBUtils.CODE_SUCCESS;
+                result = true;
             }
         } finally {
             closeConnection();
@@ -247,6 +278,44 @@ public class UserDAO {
             int row = stm.executeUpdate();
             if (row > 0) {
                 result = DBUtils.CODE_SUCCESS;
+            }
+        } finally {
+            closeConnection();
+        }
+        return result;
+    }
+    
+    public int updatePassword(String userId, String password) throws SQLException, ClassNotFoundException {
+        int result = DBUtils.CODE_FAILED;
+        try {
+            con = DBUtils.getConnection();
+            String sql = "update [User] set Password=? "
+                    + "where UserId=?";
+            stm = con.prepareStatement(sql);
+            stm.setString(1, password);
+            stm.setString(2, userId);
+            int row = stm.executeUpdate();
+            if (row > 0) {
+                result = DBUtils.CODE_SUCCESS;
+            }
+        } finally {
+            closeConnection();
+        }
+        return result;
+    }
+    
+    public boolean updatePhoto(String userId, String photo) throws SQLException, ClassNotFoundException {
+        boolean result = false;
+        try {
+            con = DBUtils.getConnection();
+            String sql = "update [User] set Photo=? "
+                    + "where UserId=?";
+            stm = con.prepareStatement(sql);
+            stm.setString(1, photo);
+            stm.setString(2, userId);
+            int row = stm.executeUpdate();
+            if (row > 0) {
+                result = true;
             }
         } finally {
             closeConnection();
@@ -301,17 +370,17 @@ public class UserDAO {
         }
     }
 
-    private int getSQLMessage(Throwable ex) {
-        int result = DBUtils.CODE_FAILED;
-        String eMsg = ex.getMessage();
-        if (eMsg.contains(DBUtils.ERR_MSG_DUPLICATE)) {
-            result = DBUtils.CODE_DUPLICATE_UNIQUE_VALUE;
-            if (eMsg.contains(DBUtils.ERR_MSG_USER_EMAIL_UNIQUE)) {
-                result = DBUtils.CODE_DUPLICATE_USER_EMAIL;
-            } else if (eMsg.contains(DBUtils.ERR_MSG_USER_PHONE_UNIQUE)) {
-                result = DBUtils.CODE_DUPLICATE_USER_PHONE;
-            }
-        }
-        return result;
-    }
+//    private int getSQLMessage(Throwable ex) {
+//        int result = DBUtils.CODE_FAILED;
+//        String eMsg = ex.getMessage();
+//        if (eMsg.contains(DBUtils.ERR_MSG_DUPLICATE)) {
+//            result = DBUtils.CODE_DUPLICATE_UNIQUE_VALUE;
+//            if (eMsg.contains(DBUtils.ERR_MSG_USER_EMAIL_UNIQUE)) {
+//                result = DBUtils.CODE_DUPLICATE_USER_EMAIL;
+//            } else if (eMsg.contains(DBUtils.ERR_MSG_USER_PHONE_UNIQUE)) {
+//                result = DBUtils.CODE_DUPLICATE_USER_PHONE;
+//            }
+//        }
+//        return result;
+//    }
 }

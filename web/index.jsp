@@ -92,7 +92,7 @@
                             <c:url var="deleteLink" value="ServletCenter">
                                 <c:param name="action" value="Delete"/>
                                 <c:param name="userId" value="${user.userId}"/>
-                                <c:param name="searchValue" value="${param.searchValue}"/>
+                                <c:param name="roleSearched" value="${param.roleSearched}"/>
                             </c:url>
                             <a href="${deleteLink}">Delete</a>
                         </c:if>

@@ -47,7 +47,7 @@ public class ServletSearchAccount extends HttpServlet {
                 url = UrlConstants.PAGE_HOME;
                 
                 if (activeAdmin) {
-                    processAdminRequest(request, url);
+                    processAdminRequest(request);
                 } else {
                     //Non Admin Search
                 }
@@ -100,7 +100,7 @@ public class ServletSearchAccount extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void processAdminRequest(HttpServletRequest request, String url) throws ClassNotFoundException, SQLException {
+    private void processAdminRequest(HttpServletRequest request) throws ClassNotFoundException, SQLException {
         String searchValue = request.getParameter("searchValue");
         String roleId = request.getParameter("roleSearched");
 

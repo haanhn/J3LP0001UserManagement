@@ -45,13 +45,14 @@ public class ServletGetUsersByRole extends HttpServlet {
             if (activeSession) {
                 url = UrlConstants.PAGE_HOME;
                 boolean activeAdmin = ServletCenter.checkSessionAdmin(request);
-                String roleId = request.getParameter("roleSearched");
 
                 if (activeAdmin) {
-                    processAdminRequest(request, roleId);
+                    processAdminRequest(request);
                 } else {
                     //Non Admin Search
+                    
                 }
+
             }
         } catch (ClassNotFoundException | SQLException ex) {
             log(ex.getMessage(), ex);
@@ -100,11 +101,20 @@ public class ServletGetUsersByRole extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void processAdminRequest(HttpServletRequest request, String roleId) throws SQLException, ClassNotFoundException {
+    private void processAdminRequest(HttpServletRequest request) throws SQLException, ClassNotFoundException {
         UserDAO dao = new UserDAO();
         RoleDAO roleDao = new RoleDAO();
+        
         UserDTO user = ServletCenter.getCurrentUser(request);
-        List<UserDTO> users = dao.findUserByRoleId(roleId, user.getUserId());
+        String roleId = request.getParameter("roleSearched");
+        
+        List<UserDTO> users;
+        if (roleId != null && roleId.length() > 0) {
+            users = dao.findUserByRoleId(roleId, user.getUserId());
+        } else {
+            users = dao.findAllUsers(user.getUserId());
+        }
+        
         Map<String, String> roles = roleDao.getAllNonAdminRoles();
 
         request.setAttribute(UrlConstants.ATTR_USERS, users);

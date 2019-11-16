@@ -25,8 +25,8 @@
         <servlet-class>haanh.servlet.ServletHome</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ServletUpdatePassword</servlet-name>
-        <servlet-class>haanh.servlet.ServletUpdatePassword</servlet-class>
+        <servlet-name>ServletChangePassword</servlet-name>
+        <servlet-class>haanh.servlet.ServletChangePassword</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ServletGetPageInsert</servlet-name>
@@ -77,8 +77,8 @@
         <url-pattern>/ServletHome</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ServletUpdatePassword</servlet-name>
-        <url-pattern>/ServletUpdatePassword</url-pattern>
+        <servlet-name>ServletChangePassword</servlet-name>
+        <url-pattern>/ServletChangePassword</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ServletGetPageInsert</servlet-name>

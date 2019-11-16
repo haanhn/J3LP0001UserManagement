@@ -15,7 +15,8 @@
     <body>
         <h1>Hello World!</h1>
         <c:set var="e" value="${error}"/>
-        <form action="ServletCenter" method="POST">
+        
+        <form action="ServletCenter" method="POST" enctype="multipart/form-data">
             <table border="0">
                 <tr>
                     <th>User Id</th>
@@ -62,7 +63,7 @@
                 <tr>
                     <th>Photo</th>
                     <td>
-                        <input type="text" name="photo" value="${param.photo}" />
+                        <input type="file" name="photo" />
                     </td>
                 </tr>
                 <tr>
@@ -85,11 +86,13 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <input type="submit" name="action" value="Insert" />
+                        <input type="submit" name="action" value="Insert User" />
                     </td>
                 </tr>
             </table>
         </form>
         ${message}
+        ${messageUser}
+        ${messagePhoto}
     </body>
 </html>
