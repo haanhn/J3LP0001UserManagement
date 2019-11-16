@@ -12,11 +12,8 @@ import static haanh.servlet.ServletInsertUser.insertPhoto;
 import static haanh.servlet.ServletInsertUser.updateUserPhotoData;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -42,7 +39,7 @@ public class ServletChangeUserPhoto extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = UrlConstants.PAGE_USER_DETAIL;
+        String url = UrlConstants.PAGE_BACKGROUND;
         
         try {
             Map<String, String> params = (Map<String, String>) request.getAttribute(UrlConstants.ATTR_PARAMS);
@@ -61,6 +58,7 @@ public class ServletChangeUserPhoto extends HttpServlet {
                 request.setAttribute(UrlConstants.ATTR_MESSAGE_PHOTO, "Insert Photo failed!");
             }
             
+            request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_USER_DETAIL);
             request.setAttribute(UrlConstants.ATTR_USER, getUserDetail(userId));
             request.setAttribute(UrlConstants.ATTR_ROLES, getRoles());
         } catch (Exception ex) {

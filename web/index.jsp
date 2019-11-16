@@ -14,14 +14,16 @@
         <link href="css/myStyle.css" type="text/css" rel="stylesheet">
     </head>
     <body>
-        Welcome, ${currentUser.fullname}
-        <h1>List Account</h1>
+        <h2>List Account</h2>
 
+        <c:if test="${currentUser.roleId eq 'AD001'}">
+            
         <form action="ServletCenter">
             <input type="text" name="searchValue" value="${param.searchValue}" />
             <input type="hidden" name="roleSearched" value="${param.roleSearched}" />
             <input type="submit" name="action" value="Search" />
         </form>
+        </c:if>
 
         <ul class="list-tab-roles">
             <li>
@@ -32,6 +34,8 @@
                     <b><a href="ServletCenter">All</a></b>
                 </c:if>
             </li>
+            
+            <c:if test="${currentUser.roleId eq 'AD001'}">
             <c:forEach items="${roles}" var="role">
                 <li>
                     <c:url var="linkGetUsersByRole" value="ServletCenter">
@@ -48,6 +52,7 @@
                     </c:choose>
                 </li>
             </c:forEach>
+            </c:if>
         </ul>
 
         <c:if test="${not empty users}">
@@ -110,7 +115,7 @@
         </table>
     </c:if>
     <c:if test="${empty users}">
-        No User found!
+        <p class="message">No User found!</p>
     </c:if>
 
     ${message}

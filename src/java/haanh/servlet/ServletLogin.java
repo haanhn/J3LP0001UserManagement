@@ -47,7 +47,7 @@ public class ServletLogin extends HttpServlet {
             if (dto != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute(UrlConstants.ATTR_CURRENT_USER, dto);
-                url = UrlConstants.SERVLET_HOME;
+                url = UrlConstants.SERVLET_GET_USERS_BY_ROLE;
             } else {
                 request.setAttribute("error", "Wrong User Id or Password, please try again");
             }

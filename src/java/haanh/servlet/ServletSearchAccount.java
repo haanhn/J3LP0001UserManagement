@@ -44,10 +44,11 @@ public class ServletSearchAccount extends HttpServlet {
         try {
             if (activeSession) {
                 boolean activeAdmin = ServletCenter.checkSessionAdmin(request);
-                url = UrlConstants.PAGE_HOME;
+                url = UrlConstants.PAGE_BACKGROUND;
                 
                 if (activeAdmin) {
                     processAdminRequest(request);
+                    request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_HOME);
                 } else {
                     //Non Admin Search
                 }

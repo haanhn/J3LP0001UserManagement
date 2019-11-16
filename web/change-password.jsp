@@ -9,31 +9,32 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Change my Password</title>
+        <link href="css/myStyle.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <a href="ServletCenter">Back to Home</a>
         <form action="ServletCenter" method="POST">
             <table border="0">
                 <tr>
                     <th>Old Password</th>
                     <td>
                         <input type="password" name="oldPassword" value="" />
-                        ${error.oldPasswordErr}
+                        <span class="show-input-err">${error.oldPasswordErr}</span>
                     </td>
                 </tr>
                 <tr>
                     <th>New Password</th>
                     <td>
                         <input type="password" name="newPassword" value="" />
-                        ${error.newPasswordErr}
+                        <span class="show-input-err">${error.newPasswordErr}</span>
                     </td>
                 </tr>
                 <tr>
                     <th>Confirm</th>
                     <td>
                         <input type="password" name="confirm" value="" />
-                        ${error.confirmErr}
+                        <span class="show-input-err">${error.confirmErr}</span>
                     </td>
                 </tr>
                 <tr>
@@ -43,6 +44,6 @@
                 </tr>
             </table>
         </form>
-        ${message}
+        <p class="message">${message}</p>
     </body>
 </html>

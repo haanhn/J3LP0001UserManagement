@@ -14,7 +14,7 @@
         <link href="css/myStyle.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <h1>User Detail</h1>
+        <h2>User Detail</h2>
         
         <c:if test="${empty user.photo}">
             (No Photo)
@@ -95,12 +95,12 @@
         <p class="message">${message}</p>
         
         <form action="ServletCenter" method="POST">
-            <input type="hidden" value="${user.userId}" name="userId" />
+            <input type="hidden" value="${currentUser.userId}" name="userId" />
             <input type="submit" value="ChangeUserPassword" name="action" />
         </form>
         
         <form action="ServletCenter" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="userId" value="${user.userId}" />
+            <input type="hidden" name="userId" value="${currentUser.userId}" />
             <input type="file" name="photo" />
             <input type="submit" value="ChangeUserPhoto" name="action" />
         </form>

@@ -45,9 +45,6 @@ public class ServletInsertUser extends HttpServlet {
         String url = UrlConstants.PAGE_LOGIN;
         boolean activeSession = ServletCenter.checkSession(request);
 
-        System.out.println("insert  sssssev");
-        System.out.println("active SEsion" + activeSession);
-
         try {
             if (activeSession) {
                 boolean activeAdmin = ServletCenter.checkSessionAdmin(request);

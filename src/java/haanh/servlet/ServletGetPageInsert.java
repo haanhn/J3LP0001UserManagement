@@ -40,11 +40,12 @@ public class ServletGetPageInsert extends HttpServlet {
         
         try {
             if (activeSession) {
-                url = UrlConstants.PAGE_INSERT_USER;
+                url = UrlConstants.PAGE_BACKGROUND;
                 
                 RoleDAO dao = new RoleDAO();
                 Map<String, String> map = dao.getAllNonAdminRoles();
                 
+                request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_INSERT_USER);
                 request.setAttribute(UrlConstants.ATTR_ROLES, map);
             }
         } catch (SQLException | ClassNotFoundException ex) {

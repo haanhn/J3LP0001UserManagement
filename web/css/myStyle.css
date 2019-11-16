@@ -3,7 +3,6 @@
     Author     : HaAnh
 */
 
-
 a {
     color: inherit;
 }
@@ -12,8 +11,33 @@ ul {
     list-style-type: none;
     text-decoration: none;
     font-size: 120%;
+    margin: 0;
+    padding: 0;
 }
 
+/******************************
+***********BACKGROUND**********
+*******************************/
+.box-welcome {
+    color: forestgreen;
+    font-size: 110%;
+}
+.list-top-navigation {
+    font-size: 90%;
+    position: absolute;
+    top: 0px;
+    right: 10px;
+}
+.list-top-navigation li {
+    display: inline-block;
+    padding: 10px 0;
+    margin-right: 10px;
+}
+.list-function li {
+    display: inline-block;
+    padding: 10px 0;
+    margin-right: 10px;
+}
 /******************************
 ***********PAGE HOME***********
 *******************************/

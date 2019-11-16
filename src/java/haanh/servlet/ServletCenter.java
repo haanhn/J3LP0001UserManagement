@@ -51,7 +51,8 @@ public class ServletCenter extends HttpServlet {
         System.out.println("action = " + action);
 
         if (activeSession) {
-            url = UrlConstants.SERVLET_HOME;
+//            url = UrlConstants.SERVLET_HOME;
+            url = UrlConstants.SERVLET_GET_USERS_BY_ROLE;
 
             if (action != null) {
                 if (action.equals("Search")) {
@@ -64,6 +65,8 @@ public class ServletCenter extends HttpServlet {
                     url = UrlConstants.SERVLET_INSERT_USER;
                 } else if (action.equals("View User Detail")) {
                     url = UrlConstants.SERVLET_GET_USER_DETAIL;
+                } else if (action.equals("ViewProfile")) {
+                    url = UrlConstants.SERVLET_VIEW_CURRENT_USER_PROFILE;
                 } else if (action.equals("Update User")) {
                     url = UrlConstants.SERVLET_UPDATE_USER;
                 } else if (action.equals("Log Out")) {

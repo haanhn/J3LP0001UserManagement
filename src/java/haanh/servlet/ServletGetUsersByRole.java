@@ -43,7 +43,7 @@ public class ServletGetUsersByRole extends HttpServlet {
 
         try {
             if (activeSession) {
-                url = UrlConstants.PAGE_HOME;
+                url = UrlConstants.PAGE_BACKGROUND;
                 boolean activeAdmin = ServletCenter.checkSessionAdmin(request);
 
                 if (activeAdmin) {
@@ -52,9 +52,11 @@ public class ServletGetUsersByRole extends HttpServlet {
                     //Non Admin Search
                     
                 }
+                request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_HOME);
 
             }
         } catch (ClassNotFoundException | SQLException ex) {
+            url = UrlConstants.PAGE_ERROR;
             log(ex.getMessage(), ex);
         }
 

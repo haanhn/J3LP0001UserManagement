@@ -60,6 +60,10 @@
         <servlet-name>ServletChangeUserPhoto</servlet-name>
         <servlet-class>haanh.servlet.ServletChangeUserPhoto</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletViewCurrentUserProfile</servlet-name>
+        <servlet-class>haanh.servlet.ServletViewCurrentUserProfile</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletCenter</servlet-name>
         <url-pattern>/ServletCenter</url-pattern>
@@ -120,6 +124,10 @@
         <servlet-name>ServletChangeUserPhoto</servlet-name>
         <url-pattern>/ServletChangeUserPhoto</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletViewCurrentUserProfile</servlet-name>
+        <url-pattern>/ServletViewCurrentUserProfile</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
@@ -128,4 +136,12 @@
     <welcome-file-list>
         <welcome-file>ServletCenter</welcome-file>
     </welcome-file-list>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/page-404.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error.jsp</location>
+    </error-page>
 </web-app>

@@ -6,8 +6,6 @@
 package haanh.servlet;
 
 import haanh.dao.RoleDAO;
-import haanh.dao.UserDAO;
-import haanh.dto.UserDTO;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -21,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author HaAnh
  */
-public class ServletGetUserDetail extends HttpServlet {
+public class ServletViewCurrentUserProfile extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,29 +36,21 @@ public class ServletGetUserDetail extends HttpServlet {
         
         String url = UrlConstants.PAGE_LOGIN;
         boolean activeSession = ServletCenter.checkSession(request);
-        
+
         try {
             if (activeSession) {
                 url = UrlConstants.PAGE_BACKGROUND;
-                String userId = request.getParameter("userId").trim();
-                UserDAO dao = new UserDAO();
-                UserDTO dto = dao.getUserByUserId(userId);
-                RoleDAO d = new RoleDAO();
-                request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_USER_DETAIL);
-                request.setAttribute(UrlConstants.ATTR_USER, dto);
-                request.setAttribute(UrlConstants.ATTR_ROLES, d.getAllNonAdminRoles());
+                RoleDAO roleDao = new RoleDAO();
+                request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_PROFILE);
+                request.setAttribute(UrlConstants.ATTR_ROLES, roleDao.getAllNonAdminRoles());
             }
-        } catch (ClassNotFoundException | SQLException e) {
-            log(e.getMessage(), e);
-        } catch (Exception e) {
-            log(e.getMessage(), e);
+        } catch (SQLException | ClassNotFoundException ex) {
+            url = UrlConstants.PAGE_ERROR;
+            log(ex.getMessage(), ex);
         }
-
+        
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
-
-        
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
