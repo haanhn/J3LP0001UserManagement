@@ -60,30 +60,31 @@
                 <th>Active</th>
                 <th>Role</th>
                 <th>Delete</th>
+                <th>View Detail</th>
             </thead>
             <c:forEach items="${users}" var="user" varStatus="counter">
                 <tr>
                     <td>${counter.count}</td>
                     <td>
                         <c:if test="${empty user.photo}">
-                            No Photo
+                            (No Photo)
                         </c:if>
                         <c:if test="${not empty user.photo}">
-                            ${user.photo}
+                            <img style="width: 120px;" src="${user.photo}"/>
                         </c:if>
                     </td>
                     <td>${user.userId}</td>
                     <td>${user.fullname}</td>
                     <td>
                         <c:if test="${user.active}">
-                            <p class="active-user">
+                            <span class="active-user">
                                 Active
-                            </p>
+                            </span>
                         </c:if>
                         <c:if test="${user.active eq false}">
-                            <p class="inactive-user">
+                            <span class="inactive-user">
                                 Inactive
-                            </p>
+                            </span>
                         </c:if>
                     </td>
                     <td>${roles[user.roleId]}</td>
@@ -96,6 +97,13 @@
                             </c:url>
                             <a href="${deleteLink}">Delete</a>
                         </c:if>
+                    </td>
+                    <td>
+                        <c:url var="viewDetailLink" value="ServletCenter">
+                            <c:param name="action" value="View User Detail"/>
+                            <c:param name="userId" value="${user.userId}"/>
+                        </c:url>
+                        <a href="${viewDetailLink}">View Detail</a>
                     </td>
                 </tr>
             </c:forEach>

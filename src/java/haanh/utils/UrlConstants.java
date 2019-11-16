@@ -19,6 +19,8 @@ public class UrlConstants {
     public static final String SERVLET_SEARCH_ACCOUNT = "ServletSearchAccount";
     public static final String SERVLET_DELETE_ACCOUNT = "ServletDeleteAccount";
     public static final String SERVLET_CHANGE_PASSWORD = "ServletChangePassword";
+    public static final String SERVLET_CHANGE_USER_PASSWORD = "ServletChangeUserPassword";
+    public static final String SERVLET_CHANGE_USER_PHOTO = "ServletChangeUserPhoto";
     public static final String SERVLET_GET_PAGE_INSERT = "ServletGetPageInsert";
     public static final String SERVLET_INSERT_USER = "ServletInsertUser";
     public static final String SERVLET_GET_USER_DETAIL = "ServletGetUserDetail";
@@ -31,8 +33,12 @@ public class UrlConstants {
     public static final String PAGE_INSERT_USER = "insert-user.jsp";
     public static final String PAGE_USER_DETAIL = "user-detail.jsp";
     public static final String PAGE_CHANGE_PASSWORD = "change-password.jsp";
+    public static final String PAGE_CHANGE_USER_PASSWORD = "change-user-password.jsp";
     public static final String PAGE_404 = "page-404.jsp";
     public static final String PAGE_ERROR = "error.jsp";
+    
+    //Paths
+    public static final String PATH_IMAGE = "";
     
     //Attributes
     public static final String ATTR_CURRENT_USER = "currentUser";

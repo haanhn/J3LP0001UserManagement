@@ -52,6 +52,14 @@
         <servlet-name>ServletGetUsersByRole</servlet-name>
         <servlet-class>haanh.servlet.ServletGetUsersByRole</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletChangeUserPassword</servlet-name>
+        <servlet-class>haanh.servlet.ServletChangeUserPassword</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletChangeUserPhoto</servlet-name>
+        <servlet-class>haanh.servlet.ServletChangeUserPhoto</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletCenter</servlet-name>
         <url-pattern>/ServletCenter</url-pattern>
@@ -103,6 +111,14 @@
     <servlet-mapping>
         <servlet-name>ServletGetUsersByRole</servlet-name>
         <url-pattern>/ServletGetUsersByRole</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletChangeUserPassword</servlet-name>
+        <url-pattern>/ServletChangeUserPassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletChangeUserPhoto</servlet-name>
+        <url-pattern>/ServletChangeUserPhoto</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

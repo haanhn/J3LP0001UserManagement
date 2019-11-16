@@ -196,6 +196,24 @@ public class UserDAO {
         return existed;
     }
     
+    public boolean checkEmailExistForUpdate(String userId, String email) throws ClassNotFoundException, SQLException {
+        boolean existed = false;
+        try {
+            String sql = "select UserId from [User] where UserId!=? and Email=?";
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setString(1, userId);
+            stm.setString(2, email);
+            rs = stm.executeQuery();
+            if (rs.next()) {
+                existed = true;
+            }
+        } finally {
+            closeConnection();
+        }
+        return existed;
+    }
+    
     public boolean checkPhoneExist(String phone) throws ClassNotFoundException, SQLException {
         boolean existed = false;
         try {
@@ -203,6 +221,24 @@ public class UserDAO {
             con = DBUtils.getConnection();
             stm = con.prepareStatement(sql);
             stm.setString(1, phone);
+            rs = stm.executeQuery();
+            if (rs.next()) {
+                existed = true;
+            }
+        } finally {
+            closeConnection();
+        }
+        return existed;
+    }
+    
+    public boolean checkPhoneExistForUpdate(String userId, String phone) throws ClassNotFoundException, SQLException {
+        boolean existed = false;
+        try {
+            String sql = "select UserId from [User] where UserId!=? and Phone=?";
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setString(1, userId);
+            stm.setString(2, phone);
             rs = stm.executeQuery();
             if (rs.next()) {
                 existed = true;
@@ -262,22 +298,21 @@ public class UserDAO {
         return result;
     }
 
-    public int updateUser(UserDTO dto) throws SQLException, ClassNotFoundException {
-        int result = DBUtils.CODE_FAILED;
+    public boolean updateUser(UserDTO dto) throws SQLException, ClassNotFoundException {
+        boolean result = false;
         try {
             con = DBUtils.getConnection();
-            String sql = "update [User] set Fullname=?, Email=?, Phone=?, Photo=?, RoleId=? "
+            String sql = "update [User] set Fullname=?, Email=?, Phone=?, RoleId=? "
                     + "where UserId=?";
             stm = con.prepareStatement(sql);
             stm.setString(1, dto.getFullname());
             stm.setString(2, dto.getEmail());
             stm.setString(3, dto.getPhone());
-            stm.setString(4, dto.getPhoto());
-            stm.setString(5, dto.getRoleId());
-            stm.setString(6, dto.getUserId());
+            stm.setString(4, dto.getRoleId());
+            stm.setString(5, dto.getUserId());
             int row = stm.executeUpdate();
             if (row > 0) {
-                result = DBUtils.CODE_SUCCESS;
+                result = true;
             }
         } finally {
             closeConnection();

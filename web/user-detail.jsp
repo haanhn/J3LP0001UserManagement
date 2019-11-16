@@ -11,14 +11,27 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>User Management</title>
+        <link href="css/myStyle.css" rel="stylesheet" type="text/css">
     </head>
     <body>
         <h1>User Detail</h1>
+        
+        <c:if test="${empty user.photo}">
+            (No Photo)
+        </c:if>
+        <c:if test="${not empty user.photo}">
+            <img style="width: 150px;" src="${user.photo}"/>
+        </c:if>
+        
+        <c:set var="e" value="${error}"/>
         <form action="ServletCenter" method="POST">
             <table border="0">
                 <tr>
                     <th>User Id</th>
-                    <td>${user.userId}</td>
+                    <td>
+                        ${user.userId}
+                        <input type="hidden" name="userId" value="${user.userId}" />
+                    </td>
                 </tr>
                 <tr>
                     <th>Fullname</th>
@@ -42,12 +55,6 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Photo</th>
-                    <td>
-                        <input type="text" name="photo" value="${user.photo}" />
-                    </td>
-                </tr>
-                <tr>
                     <th>Active</th>
                     <td>
                         <c:if test="${user.active eq true}">
@@ -63,9 +70,17 @@
                     <td>
                         <select name="role">
                             <c:forEach items="${roles}" var="role">
-                                <option value="${role.key}">
-                                    ${role.value}
-                                </option>
+                                <c:if test="${role.key ==  user.roleId}">
+                                    <option value="${role.key}" selected="selected" >
+                                        ${role.value}
+                                    </option>
+                                </c:if>
+                                <c:if test="${role.key !=  user.roleId}">
+
+                                    <option value="${role.key}" >
+                                        ${role.value}
+                                    </option>
+                                </c:if>
                             </c:forEach> 
                         </select>
                     </td>
@@ -77,7 +92,18 @@
                 </tr>
             </table>
         </form>
-
-
+        <p class="message">${message}</p>
+        
+        <form action="ServletCenter" method="POST">
+            <input type="hidden" value="${user.userId}" name="userId" />
+            <input type="submit" value="ChangeUserPassword" name="action" />
+        </form>
+        
+        <form action="ServletCenter" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="userId" value="${user.userId}" />
+            <input type="file" name="photo" />
+            <input type="submit" value="ChangeUserPhoto" name="action" />
+        </form>
+        
     </body>
 </html>

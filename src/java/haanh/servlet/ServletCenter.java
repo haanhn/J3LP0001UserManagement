@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -32,7 +30,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  * @author HaAnh
  */
 public class ServletCenter extends HttpServlet {
-
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -45,7 +43,7 @@ public class ServletCenter extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
+        
         String url = UrlConstants.PAGE_LOGIN;
         String action = request.getParameter("action");
         boolean activeSession = checkSession(request);
@@ -67,7 +65,7 @@ public class ServletCenter extends HttpServlet {
                 } else if (action.equals("View User Detail")) {
                     url = UrlConstants.SERVLET_GET_USER_DETAIL;
                 } else if (action.equals("Update User")) {
-                    url = UrlConstants.SERVLET_GET_USER_DETAIL;
+                    url = UrlConstants.SERVLET_UPDATE_USER;
                 } else if (action.equals("Log Out")) {
                     url = UrlConstants.SERVLET_LOG_OUT;
                 } else if (action.equals("GetUsersByRole")) {
@@ -76,6 +74,10 @@ public class ServletCenter extends HttpServlet {
                     url = UrlConstants.PAGE_CHANGE_PASSWORD;
                 } else if (action.equals("Change Password")) {
                     url = UrlConstants.SERVLET_CHANGE_PASSWORD;
+                } else if (action.equals("ChangeUserPassword")) {
+                    url = UrlConstants.PAGE_CHANGE_USER_PASSWORD;
+                } else if (action.equals("Change User Password")) {
+                    url = UrlConstants.SERVLET_CHANGE_USER_PASSWORD;
                 }
             } else { 
                 //action == null: check multipart/form-data
@@ -90,6 +92,8 @@ public class ServletCenter extends HttpServlet {
                     if (actionMultiPart != null) {
                         if (actionMultiPart.equals("Insert User")) {
                             url = UrlConstants.SERVLET_INSERT_USER;
+                        } else if (actionMultiPart.equals("ChangeUserPhoto")) {
+                            url = UrlConstants.SERVLET_CHANGE_USER_PHOTO;
                         }
                     }
                 } catch (FileUploadException ex) {
@@ -184,13 +188,12 @@ public class ServletCenter extends HttpServlet {
         String role = dto.getRoleId();
         return role;
     }
-    
+       
     private FileItem getParametersFormMultipart(HttpServletRequest request,
             Map<String, String> params) throws FileUploadException  {
         FileItem photoItem = null;
         
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-        System.out.println("multi part " + isMultipart);
         
         if (isMultipart) {
             FileItemFactory factory = new DiskFileItemFactory();
@@ -206,7 +209,6 @@ public class ServletCenter extends HttpServlet {
 
                 } else {
                     photoItem = item;
-                    System.out.println("Photo " + photoItem != null);
                 }
             }
         }

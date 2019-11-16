@@ -6,6 +6,7 @@
 package haanh.utils;
 
 import haanh.dao.UserDAO;
+import haanh.error.UserError;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -84,5 +85,28 @@ public class DataValidationUtils {
             valid = true;
         }
         return valid;
+    }
+
+    public static UserError validatePassword(String password, String confirm) {
+        UserError error = new UserError();
+        boolean err = false;
+        int code;
+        //validate password
+        code = DataValidationUtils.validatePassword(password);
+        if (code == UrlConstants.DATA_INVALID) {
+            error.setNewPasswordErr("Passwrod length 5-30");
+            err = true;
+        }
+        //validate confirm
+        if (error.getPasswordErr() == null) {
+            if (!confirm.equals(password)) {
+                error.setConfirmErr("Confirm must match password");
+                err = true;
+            }
+        }
+        if (!err) {
+            error = null;
+        }
+        return error;
     }
 }

@@ -3,11 +3,6 @@
     Author     : HaAnh
 */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 
 a {
     color: inherit;
@@ -40,4 +35,11 @@ ul {
 }
 .inactive-user {
     color: tomato;
+}
+.show-input-err {
+    color: red;
+}
+.message {
+    font-size: 120%;
+    color: green;
 }

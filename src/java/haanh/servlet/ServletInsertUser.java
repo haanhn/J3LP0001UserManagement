@@ -14,9 +14,6 @@ import haanh.utils.UrlConstants;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,8 +21,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileItemFactory;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
@@ -119,26 +114,8 @@ public class ServletInsertUser extends HttpServlet {
         FileItem photoItem = (FileItem) request.getAttribute(UrlConstants.ATTR_PHOTO_ITEM);
         
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-        System.out.println("multi part " + isMultipart);
+        
         if (isMultipart) {
-//            FileItemFactory factory = new DiskFileItemFactory();
-//            ServletFileUpload upload = new ServletFileUpload(factory);
-//
-//            List items = upload.parseRequest(request);
-//            Iterator ite = items.iterator();
-//            System.out.println(ite.hasNext());
-//            while (ite.hasNext()) {
-//                FileItem item = (FileItem) ite.next();
-//                if (item.isFormField()) {
-//                    System.out.println(item.getFieldName() + ":" + item.getString());
-//                    params.put(item.getFieldName(), item.getString());
-//
-//                } else {
-//                    photoItem = item;
-//                    System.out.println("Photo " + photoItem != null);
-//                }
-//            }
-
             boolean resultUser = insertUser(request, params);
 
             //Insert Photo
@@ -147,12 +124,13 @@ public class ServletInsertUser extends HttpServlet {
 
                 if (photoItem != null) {
                     String userId = params.get("userId").trim().toLowerCase();
-                    boolean resultPhoto = insertPhoto(photoItem, userId);
+                    String photoPath = getServletContext().getRealPath("/");
+                    boolean resultPhoto = insertPhoto(photoItem, userId, photoPath);
                     if (resultPhoto) {
                         boolean updatePhoto = updateUserPhotoData(photoItem, userId);
                         if  (updatePhoto) {
                             request.setAttribute(UrlConstants.ATTR_MESSAGE_PHOTO, "Insert Photo successfully!");
-                        } //chua kiem tra update photo in db
+                        }
                     } else {
                         request.setAttribute(UrlConstants.ATTR_MESSAGE_PHOTO, "Insert Photo failed!");
                     }
@@ -200,12 +178,8 @@ public class ServletInsertUser extends HttpServlet {
     }
 
     //Insert an existing photo
-    public boolean insertPhoto(FileItem item, String userId) throws Exception {
+    public static boolean insertPhoto(FileItem item, String userId, String folderPath) throws Exception {
         boolean result = false;
-
-        System.out.println(item.getName());
-        System.out.println(getServletContext().getRealPath("/"));
-        System.out.println(getServletContext().getContextPath());
 
         String filename = item.getName();
         int index = filename.lastIndexOf("\\");
@@ -216,8 +190,7 @@ public class ServletInsertUser extends HttpServlet {
         if (validPhoto) {
             String extension = filename.substring(filename.lastIndexOf("."));
             filename = userId + extension;
-            File file = new File(getServletContext().getRealPath("/") + filename);
-            System.out.println("f1=" + file);
+            File file = new File(folderPath + filename);
             item.write(file);
             result = true;
         }
@@ -225,7 +198,7 @@ public class ServletInsertUser extends HttpServlet {
         return result;
     }
 
-    private static UserError validateInsertUserData(String userId, String password, String confirm,
+    private UserError validateInsertUserData(String userId, String password, String confirm,
             String fullname, String email, String phone)
             throws ClassNotFoundException, SQLException {
         UserError error = new UserError();
@@ -300,7 +273,7 @@ public class ServletInsertUser extends HttpServlet {
 //        return result;
 //    }
 
-    private boolean updateUserPhotoData(FileItem photoItem, String userId) throws SQLException, ClassNotFoundException {
+    public static boolean updateUserPhotoData(FileItem photoItem, String userId) throws SQLException, ClassNotFoundException {
         UserDAO dao = new UserDAO();
         
         String filename = photoItem.getName();

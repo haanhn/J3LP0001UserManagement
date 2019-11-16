@@ -5,25 +5,30 @@
  */
 package haanh.servlet;
 
+import haanh.dao.RoleDAO;
 import haanh.dao.UserDAO;
 import haanh.dto.UserDTO;
-import haanh.error.UserError;
-import haanh.utils.DBUtils;
-import haanh.utils.DataValidationUtils;
+import static haanh.servlet.ServletInsertUser.insertPhoto;
+import static haanh.servlet.ServletInsertUser.updateUserPhotoData;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.fileupload.FileItem;
 
 /**
  *
  * @author HaAnh
  */
-public class ServletChangePassword extends HttpServlet {
+public class ServletChangeUserPhoto extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,19 +42,32 @@ public class ServletChangePassword extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
-        String url = UrlConstants.PAGE_LOGIN;
-        boolean activeSession = ServletCenter.checkSession(request);
-
-        try {
-            if (activeSession) {
-                url = UrlConstants.PAGE_CHANGE_PASSWORD;
-                processRequest(request);
-            }
-        } catch (ClassNotFoundException | SQLException e) {
-            log(e.getMessage(), e);
-        } 
+        String url = UrlConstants.PAGE_USER_DETAIL;
         
+        try {
+            Map<String, String> params = (Map<String, String>) request.getAttribute(UrlConstants.ATTR_PARAMS);
+            FileItem photoItem = (FileItem) request.getAttribute(UrlConstants.ATTR_PHOTO_ITEM);
+
+            String userId = params.get("userId");
+            String photoPath = getServletContext().getRealPath("/");
+            
+            boolean resultPhoto = insertPhoto(photoItem, userId, photoPath);
+            if (resultPhoto) {
+                boolean updatePhoto = updateUserPhotoData(photoItem, userId);
+                if (updatePhoto) {
+                    request.setAttribute(UrlConstants.ATTR_MESSAGE_PHOTO, "Insert Photo successfully!");
+                }
+            } else {
+                request.setAttribute(UrlConstants.ATTR_MESSAGE_PHOTO, "Insert Photo failed!");
+            }
+            
+            request.setAttribute(UrlConstants.ATTR_USER, getUserDetail(userId));
+            request.setAttribute(UrlConstants.ATTR_ROLES, getRoles());
+        } catch (Exception ex) {
+            log(ex.getMessage(), ex);
+            url = UrlConstants.PAGE_ERROR;
+        }
+
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }
@@ -93,42 +111,14 @@ public class ServletChangePassword extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void processRequest(HttpServletRequest request) throws SQLException, ClassNotFoundException {
-        UserDTO user = ServletCenter.getCurrentUser(request);
-
-        String oldPassword = request.getParameter("oldPassword");
-        String newPassword = request.getParameter("newPassword");
-        String confirm = request.getParameter("confirm");
-
-        UserError error = checkPasswordChanging(user.getUserId(), oldPassword);
-        String msg = null;
-        
-        if (error == null) {
-            error = DataValidationUtils.validatePassword(newPassword, confirm);
-            if (error == null) {
-                UserDAO dao = new UserDAO();
-                int code = dao.updatePassword(user.getUserId(), newPassword);
-                if (code == DBUtils.CODE_SUCCESS) {
-                    msg = "Update Password successfully!";
-                } else if (code == DBUtils.CODE_FAILED) {
-                    msg = "Update Password failed!";
-                }
-             }
-        }
-        
-        request.setAttribute(UrlConstants.ATTR_ERROR, error);
-        request.setAttribute(UrlConstants.ATTR_MESSAGE, msg);
+    private UserDTO getUserDetail(String userId) throws ClassNotFoundException, SQLException {
+        UserDAO dao = new UserDAO();
+        UserDTO dto = dao.getUserByUserId(userId);
+        return dto;
     }
     
-    private static UserError checkPasswordChanging(String accountId, String oldPassword) throws SQLException, ClassNotFoundException {
-        UserError error = null;
-        UserDAO dao = new UserDAO();
-        boolean correctPassword = dao.checkAccountPassword(accountId, oldPassword);
-        if (!correctPassword) {
-            error = new UserError();
-            error.setOldPasswordErr("Password incorrect");
-        }
-        return error;
+    private Map<String, String> getRoles() throws SQLException, ClassNotFoundException {
+        RoleDAO dao = new RoleDAO();
+        return dao.getAllNonAdminRoles();
     }
-
 }
