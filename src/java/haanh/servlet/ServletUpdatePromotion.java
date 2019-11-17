@@ -8,13 +8,10 @@ package haanh.servlet;
 import haanh.dao.PromotionDAO;
 import haanh.dto.PromotionDTO;
 import haanh.error.PromotionError;
-import haanh.utils.DataValidationUtils;
 import haanh.utils.DtoUtils;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author HaAnh
  */
-public class ServletInsertPromotion extends HttpServlet {
+public class ServletUpdatePromotion extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,37 +38,35 @@ public class ServletInsertPromotion extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         String url = UrlConstants.PAGE_BACKGROUND;
-
+        int id = Integer.parseInt(request.getParameter("id").trim());
         String name = request.getParameter("name").trim();
         String description = request.getParameter("description").trim();
         String fromDate = request.getParameter("fromDate").trim();
         String toDate = request.getParameter("toDate").trim();
 
-        PromotionError error = null;
-        
+        PromotionError error = ServletInsertPromotion.validatePromoData(name, description, fromDate, toDate);
+
         try {
-            error = validatePromoData(name, description, fromDate, toDate);
             if (error == null) {
-                PromotionDTO dto = DtoUtils.getPromotion(null, name, description, fromDate, toDate, true);
                 PromotionDAO dao = new PromotionDAO();
-                boolean result = dao.insertPromo(dto);
-                if (result) {
-                    request.setAttribute(UrlConstants.ATTR_MESSAGE, "Insert Promotion successfully!");
+                PromotionDTO dto = DtoUtils.getPromotion(id, name, description, fromDate, toDate, null);
+                
+                if (dao.updatePromo(dto)) {
+                    request.setAttribute(UrlConstants.ATTR_MESSAGE, "Update Promotion successfully!");
                 } else {
-                    request.setAttribute(UrlConstants.ATTR_MESSAGE, "Insert Promotion failed!");
+                    request.setAttribute(UrlConstants.ATTR_MESSAGE, "Update Promotion failed!");                    
                 }
+                
             }
         } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(ServletInsertPromotion.class.getName()).log(Level.SEVERE, null, ex);
+            log(ex.getMessage(), ex);
             url = UrlConstants.PAGE_ERROR;
         }
-
-        request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_INSERT_PROMO);
-        request.setAttribute(UrlConstants.ATTR_ERROR, error);
         
+        request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_PROMO_DETAIL);
+        request.setAttribute(UrlConstants.ATTR_ERROR, error);
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -112,41 +107,5 @@ public class ServletInsertPromotion extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    public static PromotionError validatePromoData(String name, String description, String fromDateStr, String toDateStr) {
-        PromotionError error = new PromotionError();
-        boolean err = false;
-        //validate name
-        if (name.length() == 0) {
-            error.setNameErr("Required");
-            err = true;
-        }
-        //validate description
-        if (description.length() == 0) {
-            error.setDescriptionErr("Required");
-            err = true;
-        }
-
-        //validate fromDate
-        if (fromDateStr.length() == 0) {
-            error.setFromDateErr("Required");
-            err = true;
-        } else if (!DataValidationUtils.validateDate(fromDateStr)) {
-            error.setFromDateErr("Date format: dd/MM/yyyy and must be a valid date");
-            err = true;
-        }
-        //validate toDate
-        if (toDateStr.length() == 0) {
-            error.setToDateErr("Required");
-            err = true;
-        } else if (!DataValidationUtils.validateDate(toDateStr)) {
-            error.setToDateErr("Date format: dd/MM/yyyy and must be a valid date");
-            err = true;
-        }
-        if (!err) {
-            error = null;
-        }
-        return error;
-    }
 
 }

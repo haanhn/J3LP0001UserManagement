@@ -9,10 +9,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Page 404</title>
     </head>
     <body>
-        <h1>404 not found</h1>
-        <img src="PAY-New-Hollywood-couple-Taylor-Swift-and-Tom-Hiddleston.jpg"/>
+        <h1>Error code 404</h1>
+        <p>Resource is not found!</p>
+        <a href="ServletCenter">Back to home</a>
     </body>
 </html>

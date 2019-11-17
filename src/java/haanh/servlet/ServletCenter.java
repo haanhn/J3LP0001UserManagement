@@ -55,6 +55,7 @@ public class ServletCenter extends HttpServlet {
             url = UrlConstants.SERVLET_GET_USERS_BY_ROLE;
 
             if (action != null) {
+                //Users
                 if (action.equals("Search")) {
                     url = UrlConstants.SERVLET_SEARCH_ACCOUNT;
                 } else if (action.equals("Delete")) {
@@ -81,8 +82,22 @@ public class ServletCenter extends HttpServlet {
                     url = UrlConstants.PAGE_CHANGE_USER_PASSWORD;
                 } else if (action.equals("Change User Password")) {
                     url = UrlConstants.SERVLET_CHANGE_USER_PASSWORD;
+                } 
+                //Promotions
+                else if (action.equals("PageInsertPromotion")) {
+                    url = UrlConstants.PAGE_BACKGROUND;
+                    request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_INSERT_PROMO);
+                } else if (action.equals("ViewPromotions")) {
+                    url = UrlConstants.SERVLET_VIEW_PROMOTIONS;
+                } else if (action.equals("View Promotion Detail")) {
+                    url = UrlConstants.PAGE_BACKGROUND;
+                    request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_PROMO_DETAIL);
                 } else if (action.equals("Insert Promotion")) {
                     url = UrlConstants.SERVLET_INSERT_PROMO;
+                } else if (action.equals("DeletePromo")) {
+                    url = UrlConstants.SERVLET_DELETE_PROMO;
+                } else if (action.equals("Update Promotion")) {
+                    url = UrlConstants.SERVLET_UPDATE_PROMO;
                 }
             } else { 
                 //action == null: check multipart/form-data

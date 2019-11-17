@@ -68,6 +68,18 @@
         <servlet-name>ServletInsertPromotion</servlet-name>
         <servlet-class>haanh.servlet.ServletInsertPromotion</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletViewPromotions</servlet-name>
+        <servlet-class>haanh.servlet.ServletViewPromotions</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletDeletePromotion</servlet-name>
+        <servlet-class>haanh.servlet.ServletDeletePromotion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletUpdatePromotion</servlet-name>
+        <servlet-class>haanh.servlet.ServletUpdatePromotion</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletCenter</servlet-name>
         <url-pattern>/ServletCenter</url-pattern>
@@ -135,6 +147,18 @@
     <servlet-mapping>
         <servlet-name>ServletInsertPromotion</servlet-name>
         <url-pattern>/ServletInsertPromotion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletViewPromotions</servlet-name>
+        <url-pattern>/ServletViewPromotions</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletDeletePromotion</servlet-name>
+        <url-pattern>/ServletDeletePromotion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletUpdatePromotion</servlet-name>
+        <url-pattern>/ServletUpdatePromotion</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

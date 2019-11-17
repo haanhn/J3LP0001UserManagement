@@ -5,7 +5,6 @@
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -28,7 +27,6 @@
                 </c:url>
                 <a href="${logOutLink}">Log Out</a>
             </li>
-
         </ul>
 
         <h1>User Management</h1>
@@ -45,15 +43,29 @@
             <!--For Admin-->
             <c:if test="${currentUser.roleId eq 'AD001'}">
                 <li>
-                    <c:url var="pageInsertLink" value="ServletCenter">
+                    <c:url var="pageInsertUserLink" value="ServletCenter">
                         <c:param name="action" value="PageInsert"/>
                     </c:url>
-                    <a href="${pageInsertLink}">Insert new User</a>
+                    <a href="${pageInsertUserLink}">Insert new User</a>
+                </li>
+                <li>
+                    <c:url var="viewPromoLink" value="ServletCenter">
+                        <c:param name="action" value="ViewPromotions"/>
+                    </c:url>
+                    <a href="${viewPromoLink}">View Promotions</a>
+                </li>
+                <li>
+                    <c:url var="pageInsertPromoLink" value="ServletCenter">
+                        <c:param name="action" value="PageInsertPromotion"/>
+                    </c:url>
+                    <a href="${pageInsertPromoLink}">Insert new Promotion</a>
                 </li>
             </c:if>
         </ul>
 
-        <jsp:include page="${includedPage}"/>
+        <c:if test="${not empty includedPage}">
+            <jsp:include page="${includedPage}"/>
+        </c:if>
 
     </body>
 </html>

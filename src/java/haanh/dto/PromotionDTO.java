@@ -24,6 +24,15 @@ public class PromotionDTO implements Serializable {
     public PromotionDTO() {
     }
 
+    public PromotionDTO(Integer id, String name, String description, Date fromDate, Date toDate, Boolean active) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.fromDate = fromDate;
+        this.toDate = toDate;
+        this.active = active;
+    }
+
     public Integer getId() {
         return id;
     }

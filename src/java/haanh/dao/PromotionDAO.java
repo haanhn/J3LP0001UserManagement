@@ -8,32 +8,101 @@ package haanh.dao;
 import haanh.dto.PromotionDTO;
 import haanh.utils.DBUtils;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author HaAnh
  */
 public class PromotionDAO {
-    
+
     private Connection con;
     private PreparedStatement stm;
     private ResultSet rs;
-    
+
+    public List<PromotionDTO> getAllPromotions() throws SQLException, ClassNotFoundException {
+        List<PromotionDTO> list = new ArrayList<>();
+        try {
+            con = DBUtils.getConnection();
+            String sql = "select Id, Name, Description, FromDate, ToDate, Active from Promotion ";
+            stm = con.prepareStatement(sql);
+            rs = stm.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("Id");
+                String name = rs.getString("Name");
+                String description = rs.getString("Description");
+                Date fromDate = rs.getDate("FromDate");
+                Date toDate = rs.getDate("FromDate");
+                Boolean active = rs.getBoolean("Active");
+
+                PromotionDTO dto = new PromotionDTO(id, name, description, fromDate, toDate, active);
+                list.add(dto);
+            }
+        } finally {
+            closeConnection();
+        }
+        return list;
+    }
+
     public boolean insertPromo(PromotionDTO dto) throws SQLException, ClassNotFoundException {
         boolean result = false;
         try {
             con = DBUtils.getConnection();
-            String sql = "insert into Promotion(Id, Name, Description, FromDate, ToDate) "
+            String sql = "insert into Promotion(Name, Description, FromDate, ToDate, Active) "
                     + "values (?,?,?,?,?)";
             stm = con.prepareStatement(sql);
-            stm.setInt(1, dto.getId());
-            stm.setString(2, dto.getName());
-            stm.setString(3, dto.getDescription());
-            stm.setDate(4, dto.getFromDate());
-            stm.setDate(5, dto.getToDate());
+            stm.setString(1, dto.getName());
+            stm.setString(2, dto.getDescription());
+            stm.setDate(3, dto.getFromDate());
+            stm.setDate(4, dto.getToDate());
+            stm.setBoolean(5, dto.getActive());
+            int row = stm.executeUpdate();
+            if (row > 0) {
+                result = true;
+            }
+        } finally {
+            closeConnection();
+        }
+        return result;
+    }
+
+    public boolean updatePromo(PromotionDTO dto) throws SQLException, ClassNotFoundException {
+        boolean result = false;
+        try {
+            con = DBUtils.getConnection();
+            String sql = "update Promotion set Name=?, Description=?, FromDate=?, ToDate=? "
+                    + "where Id=?";
+            stm = con.prepareStatement(sql);
+            stm.setString(1, dto.getName());
+            stm.setString(2, dto.getDescription());
+            stm.setDate(3, dto.getFromDate());
+            stm.setDate(4, dto.getToDate());
+            stm.setInt(5, dto.getId());
+            int row = stm.executeUpdate();
+            if (row > 0) {
+                result = true;
+            }
+        } finally {
+            closeConnection();
+        }
+        return result;
+    }
+    
+    //Update Promotion: Active = false
+    public boolean deletePromoById(int id) throws SQLException, ClassNotFoundException {
+        boolean result = false;
+        try {
+            con = DBUtils.getConnection();
+            String sql = "update Promotion set Active=? where Id=?";
+            stm = con.prepareStatement(sql);
+            stm.setBoolean(1, false);
+            stm.setInt(2, id);
             int row = stm.executeUpdate();
             if (row > 0) {
                 result = true;
@@ -55,5 +124,5 @@ public class PromotionDAO {
             con.close();
         }
     }
-    
+
 }

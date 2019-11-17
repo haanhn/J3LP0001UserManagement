@@ -13,5 +13,7 @@
     </head>
     <body>
         <h1>Error Page</h1>
+        <p>An error has occured. We're sorry for the inconvenience!</p>
+        <a href="ServletCenter">Back to home</a>
     </body>
 </html>

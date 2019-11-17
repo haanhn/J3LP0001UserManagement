@@ -14,7 +14,12 @@ ul {
     margin: 0;
     padding: 0;
 }
-
+.table-records thead {
+    font-size: 110%;
+}
+.table-records td, .table-records th {
+    padding: 5px;
+}
 /******************************
 ***********BACKGROUND**********
 *******************************/
@@ -50,14 +55,14 @@ ul {
 .list-tab-roles li:hover {
     color: #555;
 }
-.active-user, .inactive-user {
+.active, .active-user, .inactive, .inactive-user {
     font-weight: bold;
     font-size: 95%;
 }
-.active-user {
+.active, .active-user {
     color: green;
 }
-.inactive-user {
+.inactive, .inactive-user {
     color: tomato;
 }
 .show-input-err {
