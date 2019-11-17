@@ -80,6 +80,14 @@
         <servlet-name>ServletUpdatePromotion</servlet-name>
         <servlet-class>haanh.servlet.ServletUpdatePromotion</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletGetListUsersNotInPromo</servlet-name>
+        <servlet-class>haanh.servlet.ServletGetListUsersNotInPromo</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletAddUserToPromo</servlet-name>
+        <servlet-class>haanh.servlet.ServletAddUserToPromo</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletCenter</servlet-name>
         <url-pattern>/ServletCenter</url-pattern>
@@ -159,6 +167,14 @@
     <servlet-mapping>
         <servlet-name>ServletUpdatePromotion</servlet-name>
         <url-pattern>/ServletUpdatePromotion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletGetListUsersNotInPromo</servlet-name>
+        <url-pattern>/ServletGetListUsersNotInPromo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAddUserToPromo</servlet-name>
+        <url-pattern>/ServletAddUserToPromo</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -25,6 +25,7 @@
                 <th>Active</th>
                 <th>Delete</th>
                 <th>View Detail</th>
+                <th>Add User to Promotion</th>
             </thead>
             <form action="ServletCenter" method="POST">
                 <c:forEach items="${promos}" var="promo" varStatus="counter">
@@ -64,6 +65,14 @@
                         </td>
                         <td>
                             <input type="submit" value="View Promotion Detail" name="action" />
+                        </td>
+                        <td>
+                            <c:url var="getUserNotInPromoLink" value="ServletCenter">
+                                <c:param name="action" value="GetUsersNotInPromo"/>
+                                <c:param name="promoId" value="${promo.id}"/>
+                                <c:param name="promoName" value="${promo.name}"/>
+                            </c:url>
+                            <a href="${getUserNotInPromoLink}">Add User</a>
                         </td>
                     </tr>
                 </c:forEach>

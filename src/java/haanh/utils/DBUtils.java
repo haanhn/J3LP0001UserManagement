@@ -17,6 +17,7 @@ public class DBUtils {
     
     //DB constants
     public static final String ROLE_ADMIN = "AD001";
+    public static final int USER_PROMO_DEFAULT_RANK = 5;
     
     public static final int CODE_SUCCESS = 1;
     public static final int CODE_FAILED = -1;

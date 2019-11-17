@@ -108,7 +108,7 @@ public class UserDAO {
         }
         return list;
     }
-    
+
     public List<UserDTO> findUserByRoleId(String roleId, String userId) throws ClassNotFoundException, SQLException {
         List<UserDTO> list = new ArrayList<>();
         try {
@@ -135,7 +135,7 @@ public class UserDAO {
         }
         return list;
     }
-    
+
     //Find all except userId
     public List<UserDTO> findAllUsers(String userId) throws ClassNotFoundException, SQLException {
         List<UserDTO> list = new ArrayList<>();
@@ -195,7 +195,7 @@ public class UserDAO {
         }
         return existed;
     }
-    
+
     public boolean checkEmailExistForUpdate(String userId, String email) throws ClassNotFoundException, SQLException {
         boolean existed = false;
         try {
@@ -213,7 +213,7 @@ public class UserDAO {
         }
         return existed;
     }
-    
+
     public boolean checkPhoneExist(String phone) throws ClassNotFoundException, SQLException {
         boolean existed = false;
         try {
@@ -230,7 +230,7 @@ public class UserDAO {
         }
         return existed;
     }
-    
+
     public boolean checkPhoneExistForUpdate(String userId, String phone) throws ClassNotFoundException, SQLException {
         boolean existed = false;
         try {
@@ -248,7 +248,7 @@ public class UserDAO {
         }
         return existed;
     }
-    
+
     public UserDTO getUserByUserId(String userId) throws ClassNotFoundException, SQLException {
         UserDTO dto = null;
         try {
@@ -271,6 +271,35 @@ public class UserDAO {
             closeConnection();
         }
         return dto;
+    }
+
+    //Get List all Users : not in a Promo (and include inactive: userPromo.active = false) and not role = AD001
+    public List<UserDTO> getListUsersNotInPromoAndNotAdmin(int promoId) throws SQLException, ClassNotFoundException {
+        List<UserDTO> list = new ArrayList<>();
+        try {
+            String sql = "select UserId, Fullname, Photo from [User] "
+                    + "where [User].UserId not in "
+                    + "(select UserId from UserPromotion where PromoId=? and Active=?) "
+                    + "and [User].RoleId != ? "
+                    + "and [User].Active=?";
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setInt(1, promoId);
+            stm.setBoolean(2, true);
+            stm.setString(3, DBUtils.ROLE_ADMIN);
+            stm.setBoolean(4, true);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                UserDTO dto = new UserDTO();
+                dto.setUserId(rs.getString("UserId"));
+                dto.setFullname(rs.getString("Fullname"));
+                dto.setPhoto(rs.getString("Photo"));
+                list.add(dto);
+            }
+        } finally {
+            closeConnection();
+        }
+        return list;
     }
 
     public boolean insertUser(UserDTO dto) throws SQLException, ClassNotFoundException {
@@ -319,7 +348,7 @@ public class UserDAO {
         }
         return result;
     }
-    
+
     public int updatePassword(String userId, String password) throws SQLException, ClassNotFoundException {
         int result = DBUtils.CODE_FAILED;
         try {
@@ -338,7 +367,7 @@ public class UserDAO {
         }
         return result;
     }
-    
+
     public boolean updatePhoto(String userId, String photo) throws SQLException, ClassNotFoundException {
         boolean result = false;
         try {
@@ -357,7 +386,7 @@ public class UserDAO {
         }
         return result;
     }
-    
+
     //Set User Active = false
     public boolean deleteUserById(String userId) throws SQLException, ClassNotFoundException {
         try {

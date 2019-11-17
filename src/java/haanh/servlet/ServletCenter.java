@@ -98,6 +98,10 @@ public class ServletCenter extends HttpServlet {
                     url = UrlConstants.SERVLET_DELETE_PROMO;
                 } else if (action.equals("Update Promotion")) {
                     url = UrlConstants.SERVLET_UPDATE_PROMO;
+                } else if (action.equals("GetUsersNotInPromo")) {
+                    url = UrlConstants.SERVLET_GET_LIST_USERS_NOT_IN_PROMO;
+                } else if (action.equals("Add User To Promo")) {
+                    url = UrlConstants.SERVLET_ADD_USER_TO_PROMO;
                 }
             } else { 
                 //action == null: check multipart/form-data

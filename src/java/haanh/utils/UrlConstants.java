@@ -31,6 +31,8 @@ public class UrlConstants {
     public static final String SERVLET_INSERT_PROMO = "ServletInsertPromotion";
     public static final String SERVLET_DELETE_PROMO = "ServletDeletePromotion";
     public static final String SERVLET_UPDATE_PROMO = "ServletUpdatePromotion";
+    public static final String SERVLET_GET_LIST_USERS_NOT_IN_PROMO = "ServletGetListUsersNotInPromo";
+    public static final String SERVLET_ADD_USER_TO_PROMO = "ServletAddUserToPromo";
     
     //Urls
     public static final String PAGE_LOGIN = "login.jsp";
@@ -44,6 +46,7 @@ public class UrlConstants {
     public static final String PAGE_LIST_PROMOTIONS = "list-promotions.jsp";
     public static final String PAGE_INSERT_PROMO = "insert-promo.jsp";
     public static final String PAGE_PROMO_DETAIL = "promo-detail.jsp";
+    public static final String PAGE_LIST_USER_NOT_IN_PROMO = "list-user-not-in-promo.jsp";
     public static final String PAGE_404 = "page-404.jsp";
     public static final String PAGE_ERROR = "error.jsp";
     
