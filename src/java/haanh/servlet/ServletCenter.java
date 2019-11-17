@@ -81,6 +81,8 @@ public class ServletCenter extends HttpServlet {
                     url = UrlConstants.PAGE_CHANGE_USER_PASSWORD;
                 } else if (action.equals("Change User Password")) {
                     url = UrlConstants.SERVLET_CHANGE_USER_PASSWORD;
+                } else if (action.equals("Insert Promotion")) {
+                    url = UrlConstants.SERVLET_INSERT_PROMO;
                 }
             } else { 
                 //action == null: check multipart/form-data

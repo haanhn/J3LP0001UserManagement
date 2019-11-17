@@ -7,7 +7,12 @@ package haanh.utils;
 
 import haanh.dao.UserDAO;
 import haanh.error.UserError;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -108,5 +113,36 @@ public class DataValidationUtils {
             error = null;
         }
         return error;
+    }
+    
+    public static boolean validateDate(String dateStr) {
+        boolean valid = true;
+        if (dateStr == null || dateStr.length() == 0) {
+            return false;
+        }
+        
+        DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        sdf.setLenient(false);
+        try {
+            sdf.parse(dateStr);
+        } catch (ParseException e) {
+            valid = false;
+        }
+        return valid;
+    }
+    
+    public static Date getDateFromString(String dateStr) {
+        DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        sdf.setLenient(false);
+        
+        try {
+            java.util.Date dateUtil = sdf.parse(dateStr);
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(dateUtil.getTime());
+            Date date = new Date(cal.getTimeInMillis());
+            return date;
+        } catch (ParseException e) {
+            return null;
+        }
     }
 }

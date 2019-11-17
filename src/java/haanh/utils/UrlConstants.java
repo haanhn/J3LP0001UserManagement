@@ -27,6 +27,7 @@ public class UrlConstants {
     public static final String SERVLET_UPDATE_USER = "ServletUpdateUser";
     public static final String SERVLET_GET_USERS_BY_ROLE = "ServletGetUsersByRole";
     public static final String SERVLET_VIEW_CURRENT_USER_PROFILE = "ServletViewCurrentUserProfile";
+    public static final String SERVLET_INSERT_PROMO = "ServletInsertPromotion";
     
     //Urls
     public static final String PAGE_LOGIN = "login.jsp";
@@ -37,6 +38,7 @@ public class UrlConstants {
     public static final String PAGE_USER_DETAIL = "user-detail.jsp";
     public static final String PAGE_CHANGE_PASSWORD = "change-password.jsp";
     public static final String PAGE_CHANGE_USER_PASSWORD = "change-user-password.jsp";
+    public static final String PAGE_INSERT_PROMO = "insert-promo.jsp";
     public static final String PAGE_404 = "page-404.jsp";
     public static final String PAGE_ERROR = "error.jsp";
     

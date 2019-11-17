@@ -64,6 +64,10 @@
         <servlet-name>ServletViewCurrentUserProfile</servlet-name>
         <servlet-class>haanh.servlet.ServletViewCurrentUserProfile</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletInsertPromotion</servlet-name>
+        <servlet-class>haanh.servlet.ServletInsertPromotion</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletCenter</servlet-name>
         <url-pattern>/ServletCenter</url-pattern>
@@ -127,6 +131,10 @@
     <servlet-mapping>
         <servlet-name>ServletViewCurrentUserProfile</servlet-name>
         <url-pattern>/ServletViewCurrentUserProfile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletInsertPromotion</servlet-name>
+        <url-pattern>/ServletInsertPromotion</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

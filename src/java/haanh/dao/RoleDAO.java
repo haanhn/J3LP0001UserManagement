@@ -6,15 +6,12 @@
 package haanh.dao;
 
 import haanh.utils.DBUtils;
-import haanh.utils.UrlConstants;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -37,6 +34,22 @@ public class RoleDAO {
                 if (!rs.getString("Id").equals(DBUtils.ROLE_ADMIN)) {
                     map.put(rs.getString("Id"), rs.getString("Name"));
                 }
+            }
+        } finally {
+            closeConnection();
+        }
+        return map;
+    }
+    
+    public Map<String, String> getAllRoles() throws SQLException, ClassNotFoundException  {
+        Map<String, String> map = new HashMap<>();
+        try {
+            String sql = "select Id, Name from Role";
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                map.put(rs.getString("Id"), rs.getString("Name"));
             }
         } finally {
             closeConnection();

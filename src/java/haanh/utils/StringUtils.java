@@ -7,8 +7,13 @@ package haanh.utils;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Calendar;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,8 +33,9 @@ public class StringUtils {
             Scanner sc = new Scanner(System.in);
             String text = sc.nextLine().trim();
             
-            System.out.println("Is Photo extension " + checkPhotoExtension(text));
-            
+//            System.out.println("Is Photo extension " + checkPhotoExtension(text));
+            validateDate(text);
+                
 //            MessageDigest digest = MessageDigest.getInstance("SHA-256");
 //            MessageDigest digest2 = MessageDigest.getInstance("SHA-256");
 //            
@@ -102,5 +108,19 @@ public class StringUtils {
             valid = true;
         }
         return valid;
+    }
+    
+    private static void validateDate(String s) {
+        DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        sdf.setLenient(false);
+        try {
+            java.util.Date d = sdf.parse(s);
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(d.getTime());
+            Date dd = new Date(cal.getTimeInMillis());
+            System.out.println(dd);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

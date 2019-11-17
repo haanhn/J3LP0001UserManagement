@@ -8,6 +8,8 @@ package haanh.servlet;
 import haanh.dao.RoleDAO;
 import haanh.dao.UserDAO;
 import haanh.dto.UserDTO;
+import haanh.error.UserError;
+import haanh.utils.DataValidationUtils;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -101,5 +103,42 @@ public class ServletGetUserDetail extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+//    private UserError validateUserData(String userId, String fullname, String email, String phone)
+//            throws ClassNotFoundException, SQLException {
+//        UserError error = new UserError();
+//        boolean err = false;
+//        //validate fullname
+//        if (fullname.length() == 0) {
+//            error.setFullnameErr("Fullname required");
+//            err = true;
+//        }
+//        //validate email
+//        if (!DataValidationUtils.validateEmailFormat(email)) {
+//            error.setEmailErr("Email format abc@xy.xy[.xy]");
+//            err = true;
+//        } else {
+//            UserDAO dao = new UserDAO();
+//            if (dao.checkEmailExistForUpdate(userId, email)) {
+//                error.setEmailErr("Email existed, please choose another");
+//                err = true;
+//            }
+//        }
+//        //validate phone
+//        if (!DataValidationUtils.validatePhoneFormat(phone)) {
+//            error.setPhoneErr("Phone allows digits, length: 8-15");
+//            err = true;
+//        } else {
+//            UserDAO dao = new UserDAO();
+//            if (dao.checkPhoneExistForUpdate(userId, phone)) {
+//                error.setPhoneErr("Phone existed, please choose another");
+//                err = true;
+//            }
+//        }
+//        if (!err) {
+//            error = null;
+//        }
+//        return error;
+//    }
 
 }
