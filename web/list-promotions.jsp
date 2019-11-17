@@ -25,7 +25,8 @@
                 <th>Active</th>
                 <th>Delete</th>
                 <th>View Detail</th>
-                <th>Add User to Promotion</th>
+                <th>Add User</th>
+                <th>Get Users</th>
             </thead>
             <form action="ServletCenter" method="POST">
                 <c:forEach items="${promos}" var="promo" varStatus="counter">
@@ -73,6 +74,14 @@
                                 <c:param name="promoName" value="${promo.name}"/>
                             </c:url>
                             <a href="${getUserNotInPromoLink}">Add User</a>
+                        </td>
+                        <td>
+                            <c:url var="getUserInPromoLink" value="ServletCenter">
+                                <c:param name="action" value="GetUsersInPromo"/>
+                                <c:param name="promoId" value="${promo.id}"/>
+                                <c:param name="promoName" value="${promo.name}"/>
+                            </c:url>
+                            <a href="${getUserInPromoLink}">Get Users</a>
                         </td>
                     </tr>
                 </c:forEach>

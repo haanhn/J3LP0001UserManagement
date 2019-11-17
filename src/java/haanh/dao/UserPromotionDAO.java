@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.naming.NamingException;
 
 /**
  *
@@ -22,7 +23,26 @@ public class UserPromotionDAO {
     private PreparedStatement stm;
     private ResultSet rs;
     
-    public boolean insertUserPromo(String userId, int promoId, int rank) throws SQLException, ClassNotFoundException {
+    public UserPromotionDTO getUserPromo(int promoId, String userId) throws NamingException, SQLException {
+        UserPromotionDTO dto = null;
+        try {
+            con = DBUtils.getConnection();
+            String sql = "select Id from UserPromotion where PromoId=? and UserId=?";
+            stm = con.prepareStatement(sql);
+            stm.setInt(1, promoId);
+            stm.setString(2, userId);
+            rs = stm.executeQuery();
+            if (rs.next()) {
+                dto = new UserPromotionDTO();
+                dto.setId(rs.getInt("Id"));
+            }
+        } finally {
+            closeConnection();
+        }
+        return dto;
+    }
+    
+    public boolean insertUserPromo(String userId, int promoId, int rank) throws SQLException, NamingException {
         System.out.println("userId " + userId);
         System.out.println("promoId " + promoId);
         boolean result = false;
@@ -45,13 +65,13 @@ public class UserPromotionDAO {
         return result;
     }
 
-    public boolean updateUserPromoToActive(int userPromoId) throws SQLException, ClassNotFoundException {
+    public boolean updateUserPromoStatus(int userPromoId, boolean active) throws SQLException, NamingException {
         boolean result = false;
         try {
             con = DBUtils.getConnection();
-            String sql = "update UserPromotion set Active=? where Id=? ";
+            String sql = "update UserPromotion set Active=? where Id=?";
             stm = con.prepareStatement(sql);
-            stm.setBoolean(1, true);
+            stm.setBoolean(1, active);
             stm.setInt(2, userPromoId);
             int row = stm.executeUpdate();
             if (row > 0) {
@@ -61,25 +81,6 @@ public class UserPromotionDAO {
             closeConnection();
         }
         return result;
-    }
-    
-    public UserPromotionDTO getUserPromo(int promoId, String userId) throws ClassNotFoundException, SQLException {
-        UserPromotionDTO dto = null;
-        try {
-            con = DBUtils.getConnection();
-            String sql = "select Id from UserPromotion where PromoId=? and UserId=?";
-            stm = con.prepareStatement(sql);
-            stm.setInt(1, promoId);
-            stm.setString(2, userId);
-            rs = stm.executeQuery();
-            if (rs.next()) {
-                dto = new UserPromotionDTO();
-                dto.setId(rs.getInt("Id"));
-            }
-        } finally {
-            closeConnection();
-        }
-        return dto;
     }
     
     private void closeConnection() throws SQLException {

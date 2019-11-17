@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -55,7 +56,7 @@ public class ServletInsertUser extends HttpServlet {
                     url = UrlConstants.PAGE_404;
                 }
             }
-        } catch (SQLException | ClassNotFoundException ex) {
+        } catch (SQLException | NamingException ex) {
             url = UrlConstants.PAGE_ERROR;
             log(ex.getMessage(), ex);
         } catch (Exception ex) {
@@ -106,7 +107,7 @@ public class ServletInsertUser extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void processAdminRequest(HttpServletRequest request) throws SQLException, ClassNotFoundException, Exception {
+    private void processAdminRequest(HttpServletRequest request) throws SQLException, NamingException, Exception {
         Map<String, String> params = (Map<String, String>) request.getAttribute(UrlConstants.ATTR_PARAMS);
         FileItem photoItem = (FileItem) request.getAttribute(UrlConstants.ATTR_PHOTO_ITEM);
         
@@ -141,7 +142,7 @@ public class ServletInsertUser extends HttpServlet {
 
     //Insert User
     private boolean insertUser(HttpServletRequest request,
-            Map<String, String> params) throws SQLException, ClassNotFoundException {
+            Map<String, String> params) throws SQLException, NamingException {
         UserError error;
         boolean result = false;
 
@@ -197,7 +198,7 @@ public class ServletInsertUser extends HttpServlet {
 
     private UserError validateInsertUserData(String userId, String password, String confirm,
             String fullname, String email, String phone)
-            throws ClassNotFoundException, SQLException {
+            throws NamingException, SQLException {
         UserError error = new UserError();
         boolean err = false;
         int code;
@@ -270,7 +271,7 @@ public class ServletInsertUser extends HttpServlet {
 //        return result;
 //    }
 
-    public static boolean updateUserPhotoData(FileItem photoItem, String userId) throws SQLException, ClassNotFoundException {
+    public static boolean updateUserPhotoData(FileItem photoItem, String userId) throws SQLException, NamingException {
         UserDAO dao = new UserDAO();
         
         String filename = photoItem.getName();

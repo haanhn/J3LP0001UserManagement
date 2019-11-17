@@ -9,11 +9,9 @@ import haanh.dao.PromotionDAO;
 import haanh.dto.PromotionDTO;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -47,7 +45,7 @@ public class ServletViewPromotions extends HttpServlet {
             
             request.setAttribute(UrlConstants.ATTR_PROMOS, list);
             request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_LIST_PROMOTIONS);
-        } catch (SQLException | ClassNotFoundException ex) {
+        } catch (SQLException | NamingException ex) {
             log(ex.getMessage(), ex);
             url = UrlConstants.PAGE_ERROR;
         }

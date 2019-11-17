@@ -8,12 +8,12 @@ package haanh.servlet;
 import haanh.dao.UserDAO;
 import haanh.dto.UserDTO;
 import haanh.error.UserError;
-import haanh.utils.DBUtils;
 import haanh.utils.DataValidationUtils;
 import haanh.utils.DtoUtils;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
 import java.sql.SQLException;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -49,7 +49,7 @@ public class ServletUpdateUser extends HttpServlet {
                 url = UrlConstants.SERVLET_GET_USER_DETAIL;
                 processAdminRequest(request);
             }
-        } catch (SQLException | ClassNotFoundException ex) {
+        } catch (SQLException | NamingException ex) {
             url = UrlConstants.PAGE_ERROR;
             log(ex.getMessage(), ex);
         } catch (Exception ex) {
@@ -100,7 +100,7 @@ public class ServletUpdateUser extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private boolean processAdminRequest(HttpServletRequest request) throws SQLException, ClassNotFoundException {
+    private boolean processAdminRequest(HttpServletRequest request) throws SQLException, NamingException {
         boolean result = false;
         //Get parameters & set url
         String userId = request.getParameter("userId").trim();
@@ -128,7 +128,7 @@ public class ServletUpdateUser extends HttpServlet {
     }
     
     private UserError validateUserData(String userId, String fullname, String email, String phone)
-            throws ClassNotFoundException, SQLException {
+            throws NamingException, SQLException {
         UserError error = new UserError();
         boolean err = false;
         //validate fullname

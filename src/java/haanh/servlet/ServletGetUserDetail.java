@@ -8,11 +8,10 @@ package haanh.servlet;
 import haanh.dao.RoleDAO;
 import haanh.dao.UserDAO;
 import haanh.dto.UserDTO;
-import haanh.error.UserError;
-import haanh.utils.DataValidationUtils;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
 import java.sql.SQLException;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -52,7 +51,7 @@ public class ServletGetUserDetail extends HttpServlet {
                 request.setAttribute(UrlConstants.ATTR_USER, dto);
                 request.setAttribute(UrlConstants.ATTR_ROLES, d.getAllNonAdminRoles());
             }
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (NamingException | SQLException e) {
             log(e.getMessage(), e);
         } catch (Exception e) {
             log(e.getMessage(), e);
@@ -105,7 +104,7 @@ public class ServletGetUserDetail extends HttpServlet {
     }// </editor-fold>
 
 //    private UserError validateUserData(String userId, String fullname, String email, String phone)
-//            throws ClassNotFoundException, SQLException {
+//            throws NamingException, SQLException {
 //        UserError error = new UserError();
 //        boolean err = false;
 //        //validate fullname

@@ -5,13 +5,14 @@
  */
 package haanh.servlet;
 
-import haanh.dao.PromotionDAO;
-import haanh.dto.PromotionDTO;
-import haanh.error.PromotionError;
-import haanh.utils.DtoUtils;
+import haanh.dao.UserPromotionDAO;
+import haanh.dto.UserPromotionDTO;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author HaAnh
  */
-public class ServletUpdatePromotion extends HttpServlet {
+public class ServletRemoveUserFromPromo extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,35 +38,24 @@ public class ServletUpdatePromotion extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
-        String url = UrlConstants.PAGE_BACKGROUND;
-        int id = Integer.parseInt(request.getParameter("id").trim());
-        String name = request.getParameter("name").trim();
-        String description = request.getParameter("description").trim();
-        String fromDate = request.getParameter("fromDate").trim();
-        String toDate = request.getParameter("toDate").trim();
-
-        PromotionError error = ServletInsertPromotion.validatePromoData(name, description, fromDate, toDate);
-
+        
+        String url = UrlConstants.SERVLET_GET_LIST_USERS_IN_PROMO;
+        int promoId = Integer.parseInt(request.getParameter("promoId"));
+        String userId = request.getParameter("userId");
+        
         try {
-            if (error == null) {
-                PromotionDAO dao = new PromotionDAO();
-                PromotionDTO dto = DtoUtils.getPromotion(id, name, description, fromDate, toDate, null);
-                
-                if (dao.updatePromo(dto)) {
-                    request.setAttribute(UrlConstants.ATTR_MESSAGE, "Update Promotion successfully!");
-                } else {
-                    request.setAttribute(UrlConstants.ATTR_MESSAGE, "Update Promotion failed!");                    
-                }
-                
+            UserPromotionDAO dao = new UserPromotionDAO();
+            UserPromotionDTO dto = dao.getUserPromo(promoId, userId);
+            if (dao.updateUserPromoStatus(dto.getId(), false)) {
+                request.setAttribute(UrlConstants.ATTR_MESSAGE, "Remove User successfully!");
+            } else {
+                request.setAttribute(UrlConstants.ATTR_MESSAGE, "Remove User failed!");
             }
         } catch (SQLException | NamingException ex) {
             log(ex.getMessage(), ex);
             url = UrlConstants.PAGE_ERROR;
         }
         
-        request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_PROMO_DETAIL);
-        request.setAttribute(UrlConstants.ATTR_ERROR, error);
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }

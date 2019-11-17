@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.naming.NamingException;
 
 /**
  *
@@ -36,7 +37,7 @@ public class DataValidationUtils {
                 if (existed) {
                     code = UrlConstants.ERR_USER_ID_EXISTED;
                 }
-            } catch (ClassNotFoundException | SQLException ex) {
+            } catch (NamingException | SQLException ex) {
                 code = UrlConstants.DATA_INVALID;
                 Logger.getLogger(DataValidationUtils.class.getName()).log(Level.SEVERE, null, ex);
             }

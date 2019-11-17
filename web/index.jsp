@@ -18,11 +18,11 @@
 
         <c:if test="${currentUser.roleId eq 'AD001'}">
             
-        <form action="ServletCenter">
-            <input type="text" name="searchValue" value="${param.searchValue}" />
-            <input type="hidden" name="roleSearched" value="${param.roleSearched}" />
-            <input type="submit" name="action" value="Search" />
-        </form>
+            <form action="ServletCenter">
+                <input type="text" name="searchValue" value="${param.searchValue}" />
+                <input type="hidden" name="roleSearched" value="${param.roleSearched}" />
+                <input type="submit" name="action" value="Search" />
+            </form>
         </c:if>
 
         <ul class="list-tab-roles">
@@ -114,10 +114,11 @@
             </c:forEach>
         </table>
     </c:if>
+        
     <c:if test="${empty users}">
         <p class="message">No User found!</p>
     </c:if>
-
-    ${message}
+        
+    <p class="message">${message}</p>
 </body>
 </html>

@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import javax.naming.NamingException;
 
 /**
  *
@@ -23,7 +24,7 @@ public class RoleDAO {
     private PreparedStatement stm;
     private ResultSet rs;
     
-    public Map<String, String> getAllNonAdminRoles() throws SQLException, ClassNotFoundException  {
+    public Map<String, String> getAllNonAdminRoles() throws SQLException, NamingException  {
         Map<String, String> map = new HashMap<>();
         try {
             String sql = "select Id, Name from Role";
@@ -41,7 +42,7 @@ public class RoleDAO {
         return map;
     }
     
-    public Map<String, String> getAllRoles() throws SQLException, ClassNotFoundException  {
+    public Map<String, String> getAllRoles() throws SQLException, NamingException  {
         Map<String, String> map = new HashMap<>();
         try {
             String sql = "select Id, Name from Role";

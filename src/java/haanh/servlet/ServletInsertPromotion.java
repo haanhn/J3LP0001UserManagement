@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -61,7 +62,7 @@ public class ServletInsertPromotion extends HttpServlet {
                     request.setAttribute(UrlConstants.ATTR_MESSAGE, "Insert Promotion failed!");
                 }
             }
-        } catch (SQLException | ClassNotFoundException ex) {
+        } catch (SQLException | NamingException ex) {
             Logger.getLogger(ServletInsertPromotion.class.getName()).log(Level.SEVERE, null, ex);
             url = UrlConstants.PAGE_ERROR;
         }

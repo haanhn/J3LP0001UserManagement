@@ -9,6 +9,7 @@ import haanh.dao.PromotionDAO;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
 import java.sql.SQLException;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -46,7 +47,7 @@ public class ServletDeletePromotion extends HttpServlet {
             } else {
                 request.setAttribute(UrlConstants.ATTR_MESSAGE, "Delete Promotion failed!");
             }
-        } catch (SQLException | ClassNotFoundException ex) {
+        } catch (SQLException | NamingException ex) {
             log(ex.getMessage(), ex);
             url = UrlConstants.PAGE_ERROR;
         }

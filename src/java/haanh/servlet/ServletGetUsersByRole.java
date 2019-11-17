@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -55,7 +56,7 @@ public class ServletGetUsersByRole extends HttpServlet {
                 request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_HOME);
 
             }
-        } catch (ClassNotFoundException | SQLException ex) {
+        } catch (NamingException | SQLException ex) {
             url = UrlConstants.PAGE_ERROR;
             log(ex.getMessage(), ex);
         }
@@ -103,7 +104,7 @@ public class ServletGetUsersByRole extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void processAdminRequest(HttpServletRequest request) throws SQLException, ClassNotFoundException {
+    private void processAdminRequest(HttpServletRequest request) throws SQLException, NamingException {
         UserDAO dao = new UserDAO();
         RoleDAO roleDao = new RoleDAO();
         

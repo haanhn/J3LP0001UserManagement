@@ -11,6 +11,7 @@ import haanh.utils.UrlConstants;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -45,7 +46,7 @@ public class ServletGetListUsersNotInPromo extends HttpServlet {
             
             request.setAttribute(UrlConstants.ATTR_USERS, list);
             request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_LIST_USER_NOT_IN_PROMO);
-        } catch (SQLException | ClassNotFoundException ex) {
+        } catch (SQLException | NamingException ex) {
             log(ex.getMessage(), ex);
             url = UrlConstants.PAGE_ERROR;
         } 

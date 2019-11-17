@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.naming.NamingException;
 
 /**
  *
@@ -25,7 +26,7 @@ public class PromotionDAO {
     private PreparedStatement stm;
     private ResultSet rs;
 
-    public List<PromotionDTO> getAllPromotions() throws SQLException, ClassNotFoundException {
+    public List<PromotionDTO> getAllPromotions() throws SQLException, NamingException {
         List<PromotionDTO> list = new ArrayList<>();
         try {
             con = DBUtils.getConnection();
@@ -50,7 +51,7 @@ public class PromotionDAO {
         return list;
     }
 
-    public boolean insertPromo(PromotionDTO dto) throws SQLException, ClassNotFoundException {
+    public boolean insertPromo(PromotionDTO dto) throws SQLException, NamingException {
         boolean result = false;
         try {
             con = DBUtils.getConnection();
@@ -72,7 +73,7 @@ public class PromotionDAO {
         return result;
     }
 
-    public boolean updatePromo(PromotionDTO dto) throws SQLException, ClassNotFoundException {
+    public boolean updatePromo(PromotionDTO dto) throws SQLException, NamingException {
         boolean result = false;
         try {
             con = DBUtils.getConnection();
@@ -95,7 +96,7 @@ public class PromotionDAO {
     }
     
     //Update Promotion: Active = false
-    public boolean deletePromoById(int id) throws SQLException, ClassNotFoundException {
+    public boolean deletePromoById(int id) throws SQLException, NamingException {
         boolean result = false;
         try {
             con = DBUtils.getConnection();

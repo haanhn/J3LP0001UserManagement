@@ -14,6 +14,7 @@ import haanh.utils.UrlConstants;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -109,13 +110,13 @@ public class ServletChangeUserPhoto extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private UserDTO getUserDetail(String userId) throws ClassNotFoundException, SQLException {
+    private UserDTO getUserDetail(String userId) throws NamingException, SQLException {
         UserDAO dao = new UserDAO();
         UserDTO dto = dao.getUserByUserId(userId);
         return dto;
     }
     
-    private Map<String, String> getRoles() throws SQLException, ClassNotFoundException {
+    private Map<String, String> getRoles() throws SQLException, NamingException {
         RoleDAO dao = new RoleDAO();
         return dao.getAllNonAdminRoles();
     }

@@ -9,6 +9,8 @@ import haanh.dao.RoleDAO;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Map;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -33,22 +35,21 @@ public class ServletViewCurrentUserProfile extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        String url = UrlConstants.PAGE_LOGIN;
-        boolean activeSession = ServletCenter.checkSession(request);
+
+        String url = UrlConstants.PAGE_BACKGROUND;
 
         try {
-            if (activeSession) {
-                url = UrlConstants.PAGE_BACKGROUND;
-                RoleDAO roleDao = new RoleDAO();
-                request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_PROFILE);
-                request.setAttribute(UrlConstants.ATTR_ROLES, roleDao.getAllNonAdminRoles());
-            }
-        } catch (SQLException | ClassNotFoundException ex) {
+            url = UrlConstants.PAGE_BACKGROUND;
+            RoleDAO roleDao = new RoleDAO();
+            Map<String, String> roles = roleDao.getAllRoles();
+            
+            request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_PROFILE);
+            request.setAttribute(UrlConstants.ATTR_ROLES, roles);
+        } catch (SQLException | NamingException ex) {
             url = UrlConstants.PAGE_ERROR;
             log(ex.getMessage(), ex);
         }
-        
+
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }

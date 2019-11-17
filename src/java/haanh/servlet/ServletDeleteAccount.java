@@ -9,6 +9,7 @@ import haanh.dao.UserDAO;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
 import java.sql.SQLException;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -49,7 +50,7 @@ public class ServletDeleteAccount extends HttpServlet {
                     url = UrlConstants.PAGE_404;
                 }
             }
-        } catch (SQLException | ClassNotFoundException ex) {
+        } catch (SQLException | NamingException ex) {
             log(ex.getMessage(), ex);
         }
         RequestDispatcher rd = request.getRequestDispatcher(url);
@@ -96,7 +97,7 @@ public class ServletDeleteAccount extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void processAdminRequest(HttpServletRequest request) throws SQLException, ClassNotFoundException {
+    private void processAdminRequest(HttpServletRequest request) throws SQLException, NamingException {
         String userId = request.getParameter("userId");
 
         UserDAO dao = new UserDAO();

@@ -12,6 +12,7 @@ import haanh.utils.DataValidationUtils;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
 import java.sql.SQLException;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -48,7 +49,7 @@ public class ServletChangeUserPassword extends HttpServlet {
                     processAdminRequest(request);
                 }
             }
-        } catch (SQLException | ClassNotFoundException ex) {
+        } catch (SQLException | NamingException ex) {
             url = UrlConstants.PAGE_ERROR;
             log(ex.getMessage(), ex);
         }
@@ -97,7 +98,7 @@ public class ServletChangeUserPassword extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void processAdminRequest(HttpServletRequest request) throws SQLException, ClassNotFoundException {
+    private void processAdminRequest(HttpServletRequest request) throws SQLException, NamingException {
 
         String userId = request.getParameter("userId");
         String newPassword = request.getParameter("newPassword");

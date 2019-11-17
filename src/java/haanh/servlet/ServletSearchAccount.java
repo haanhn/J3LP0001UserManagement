@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -53,7 +54,7 @@ public class ServletSearchAccount extends HttpServlet {
                     //Non Admin Search
                 }
             }
-        } catch (ClassNotFoundException | SQLException ex) {
+        } catch (NamingException | SQLException ex) {
             log(ex.getMessage(), ex);
         }
 
@@ -101,7 +102,7 @@ public class ServletSearchAccount extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void processAdminRequest(HttpServletRequest request) throws ClassNotFoundException, SQLException {
+    private void processAdminRequest(HttpServletRequest request) throws NamingException, SQLException {
         String searchValue = request.getParameter("searchValue");
         String roleId = request.getParameter("roleSearched");
 

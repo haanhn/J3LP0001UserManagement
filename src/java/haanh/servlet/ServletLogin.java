@@ -10,6 +10,7 @@ import haanh.dto.UserDTO;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
 import java.sql.SQLException;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -51,7 +52,7 @@ public class ServletLogin extends HttpServlet {
             } else {
                 request.setAttribute("error", "Wrong User Id or Password, please try again");
             }
-        } catch (ClassNotFoundException | SQLException ex) {
+        } catch (NamingException | SQLException ex) {
             log(ex.getMessage(), ex);
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);

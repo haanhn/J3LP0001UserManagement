@@ -6,8 +6,11 @@
 package haanh.utils;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 /**
  *
@@ -30,10 +33,11 @@ public class DBUtils {
     public static final String ERR_MSG_USER_EMAIL_UNIQUE = "U_Email";
     public static final String ERR_MSG_USER_PHONE_UNIQUE = "U_Phone";
     
-    public static Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        String sql = "jdbc:sqlserver://localhost:1433; databaseName=J3LP0001UserManagement";
-        Connection con = DriverManager.getConnection(sql, "sa", "1234");
+    public static Connection getConnection() throws SQLException, NamingException {
+        Context context = new InitialContext();
+        Context env = (Context) context.lookup("java:comp/env");
+        DataSource ds = (DataSource) env.lookup("J3LP0001UserManagementDS");
+        Connection con = ds.getConnection();
         return con;
     }
 }

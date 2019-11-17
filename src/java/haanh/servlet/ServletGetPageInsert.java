@@ -10,6 +10,7 @@ import haanh.utils.UrlConstants;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -48,7 +49,7 @@ public class ServletGetPageInsert extends HttpServlet {
                 request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_INSERT_USER);
                 request.setAttribute(UrlConstants.ATTR_ROLES, map);
             }
-        } catch (SQLException | ClassNotFoundException ex) {
+        } catch (SQLException | NamingException ex) {
             log(ex.getMessage(), ex);
         } 
         

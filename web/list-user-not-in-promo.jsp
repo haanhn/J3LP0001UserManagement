@@ -59,7 +59,7 @@
                                 ${user.fullname}
                             </td>
                             <td>
-                                <input type="submit" value="Add User To Promo" name="action" />
+                                <input type="submit" value="Add User To Promotion" name="action" />
                             </td>
                         </tr>
                     </c:forEach>
@@ -69,7 +69,7 @@
         </table>
     </c:if>
     <c:if test="${empty users}">
-        All Users added to this Promotion
+        <div class="message">All Users added to this Promotion</div>
     </c:if>
 
     <div class="message">${message}</div>

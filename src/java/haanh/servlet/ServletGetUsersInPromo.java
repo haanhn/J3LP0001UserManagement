@@ -6,13 +6,15 @@
 package haanh.servlet;
 
 import haanh.dao.UserDAO;
-import haanh.dao.RoleDAO;
 import haanh.dto.UserDTO;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author HaAnh
  */
-public class ServletHome extends HttpServlet {
+public class ServletGetUsersInPromo extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,34 +39,29 @@ public class ServletHome extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
-        String url = UrlConstants.PAGE_LOGIN;
-        boolean activeSession = ServletCenter.checkSession(request);
-
+        
+        String url = UrlConstants.PAGE_BACKGROUND;
+        int promoId = Integer.parseInt(request.getParameter("promoId"));
+        
+        System.out.println("promoId " + promoId);
         try {
-            if (activeSession) {
-                url = UrlConstants.PAGE_HOME;
-
-                UserDAO userDao = new UserDAO();
-                RoleDAO roleDao = new RoleDAO();
-                UserDTO user = ServletCenter.getCurrentUser(request);
-
-                List<UserDTO> list = userDao.findAllUsers(user.getUserId());
-                Map<String, String> map = roleDao.getAllNonAdminRoles();
-
-                request.setAttribute("users", list);
-                request.setAttribute("roles", map);
-            }
-        } catch (ClassNotFoundException | SQLException ex) {
+            UserDAO dao = new UserDAO();
+            List<UserDTO> list = dao.getListUsersInPromo(promoId);
+            
+            
+            request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_LIST_USER_IN_PROMO);
+            request.setAttribute(UrlConstants.ATTR_USERS, list);
+            
+        } catch (SQLException | NamingException ex) {
             log(ex.getMessage(), ex);
-        }
-
+            url = UrlConstants.PAGE_ERROR;
+        } 
+        
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
-
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

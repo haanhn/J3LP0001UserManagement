@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.naming.NamingException;
 
 /**
  *
@@ -25,7 +26,7 @@ public class UserDAO {
     private ResultSet rs;
 
     //Login: only active user can login
-    public UserDTO login(String userId, String password) throws ClassNotFoundException, SQLException {
+    public UserDTO login(String userId, String password) throws NamingException, SQLException {
         UserDTO dto = null;
         try {
             con = DBUtils.getConnection();
@@ -52,7 +53,7 @@ public class UserDAO {
     }
 
     //Find user except userId
-    public List<UserDTO> findUserByFullname(String searchValue, String userId) throws ClassNotFoundException, SQLException {
+    public List<UserDTO> findUserByFullname(String searchValue, String userId) throws NamingException, SQLException {
         List<UserDTO> list = new ArrayList<>();
         try {
             String sql = "select UserId, Fullname, Photo, Active, RoleId from [User] "
@@ -81,7 +82,7 @@ public class UserDAO {
     }
 
     //Find user except userId
-    public List<UserDTO> findUserByFullnameAndRoleId(String searchValue, String roleId, String userId) throws ClassNotFoundException, SQLException {
+    public List<UserDTO> findUserByFullnameAndRoleId(String searchValue, String roleId, String userId) throws NamingException, SQLException {
         List<UserDTO> list = new ArrayList<>();
         try {
             String sql = "select UserId, Fullname, Photo, Active, RoleId from [User] "
@@ -109,7 +110,7 @@ public class UserDAO {
         return list;
     }
 
-    public List<UserDTO> findUserByRoleId(String roleId, String userId) throws ClassNotFoundException, SQLException {
+    public List<UserDTO> findUserByRoleId(String roleId, String userId) throws NamingException, SQLException {
         List<UserDTO> list = new ArrayList<>();
         try {
             String sql = "select UserId, Fullname, Photo, Active, RoleId from [User] "
@@ -137,7 +138,7 @@ public class UserDAO {
     }
 
     //Find all except userId
-    public List<UserDTO> findAllUsers(String userId) throws ClassNotFoundException, SQLException {
+    public List<UserDTO> findAllUsers(String userId) throws NamingException, SQLException {
         List<UserDTO> list = new ArrayList<>();
         try {
             String sql = "select UserId, Fullname, Photo, Active, RoleId from [User]";
@@ -162,7 +163,7 @@ public class UserDAO {
         return list;
     }
 
-    public boolean checkUserIdExist(String userId) throws ClassNotFoundException, SQLException {
+    public boolean checkUserIdExist(String userId) throws NamingException, SQLException {
         boolean existed = false;
         try {
             String sql = "select UserId from [User] where UserId=?";
@@ -179,7 +180,7 @@ public class UserDAO {
         return existed;
     }
 
-    public boolean checkEmailExist(String email) throws ClassNotFoundException, SQLException {
+    public boolean checkEmailExist(String email) throws NamingException, SQLException {
         boolean existed = false;
         try {
             String sql = "select UserId from [User] where Email=?";
@@ -196,7 +197,7 @@ public class UserDAO {
         return existed;
     }
 
-    public boolean checkEmailExistForUpdate(String userId, String email) throws ClassNotFoundException, SQLException {
+    public boolean checkEmailExistForUpdate(String userId, String email) throws NamingException, SQLException {
         boolean existed = false;
         try {
             String sql = "select UserId from [User] where UserId!=? and Email=?";
@@ -214,7 +215,7 @@ public class UserDAO {
         return existed;
     }
 
-    public boolean checkPhoneExist(String phone) throws ClassNotFoundException, SQLException {
+    public boolean checkPhoneExist(String phone) throws NamingException, SQLException {
         boolean existed = false;
         try {
             String sql = "select UserId from [User] where Phone=?";
@@ -231,7 +232,7 @@ public class UserDAO {
         return existed;
     }
 
-    public boolean checkPhoneExistForUpdate(String userId, String phone) throws ClassNotFoundException, SQLException {
+    public boolean checkPhoneExistForUpdate(String userId, String phone) throws NamingException, SQLException {
         boolean existed = false;
         try {
             String sql = "select UserId from [User] where UserId!=? and Phone=?";
@@ -249,7 +250,7 @@ public class UserDAO {
         return existed;
     }
 
-    public UserDTO getUserByUserId(String userId) throws ClassNotFoundException, SQLException {
+    public UserDTO getUserByUserId(String userId) throws NamingException, SQLException {
         UserDTO dto = null;
         try {
             String sql = "select UserId, Fullname, Email, Phone, Photo, Active, RoleId from [User] where UserId=?";
@@ -274,7 +275,7 @@ public class UserDAO {
     }
 
     //Get List all Users : not in a Promo (and include inactive: userPromo.active = false) and not role = AD001
-    public List<UserDTO> getListUsersNotInPromoAndNotAdmin(int promoId) throws SQLException, ClassNotFoundException {
+    public List<UserDTO> getListUsersNotInPromoAndNotAdmin(int promoId) throws SQLException, NamingException {
         List<UserDTO> list = new ArrayList<>();
         try {
             String sql = "select UserId, Fullname, Photo from [User] "
@@ -302,7 +303,37 @@ public class UserDAO {
         return list;
     }
 
-    public boolean insertUser(UserDTO dto) throws SQLException, ClassNotFoundException {
+    //Get List all Users : in a Promo
+    public List<UserDTO> getListUsersInPromo(int promoId) throws SQLException, NamingException {
+        List<UserDTO> list = new ArrayList<>();
+        try {
+            String sql = "select UserId, Fullname, Photo from [User] "
+                    + "where [User].UserId in "
+                    + "(select UserId from UserPromotion where PromoId=? and Active=?) "
+                    + "and [User].RoleId != ? "
+                    + "and [User].Active=?";
+            con = DBUtils.getConnection();
+            stm = con.prepareStatement(sql);
+            stm.setInt(1, promoId);
+            stm.setBoolean(2, true);
+            stm.setString(3, DBUtils.ROLE_ADMIN);
+            stm.setBoolean(4, true);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                UserDTO dto = new UserDTO();
+                dto.setUserId(rs.getString("UserId"));
+                dto.setFullname(rs.getString("Fullname"));
+                dto.setPhoto(rs.getString("Photo"));
+                list.add(dto);
+            }
+        } finally {
+            closeConnection();
+        }
+        System.out.println("list " + list.size()) ;
+        return list;
+    }
+    
+    public boolean insertUser(UserDTO dto) throws SQLException, NamingException {
         boolean result = false;
         try {
             con = DBUtils.getConnection();
@@ -327,7 +358,7 @@ public class UserDAO {
         return result;
     }
 
-    public boolean updateUser(UserDTO dto) throws SQLException, ClassNotFoundException {
+    public boolean updateUser(UserDTO dto) throws SQLException, NamingException {
         boolean result = false;
         try {
             con = DBUtils.getConnection();
@@ -349,7 +380,7 @@ public class UserDAO {
         return result;
     }
 
-    public int updatePassword(String userId, String password) throws SQLException, ClassNotFoundException {
+    public int updatePassword(String userId, String password) throws SQLException, NamingException {
         int result = DBUtils.CODE_FAILED;
         try {
             con = DBUtils.getConnection();
@@ -368,7 +399,7 @@ public class UserDAO {
         return result;
     }
 
-    public boolean updatePhoto(String userId, String photo) throws SQLException, ClassNotFoundException {
+    public boolean updatePhoto(String userId, String photo) throws SQLException, NamingException {
         boolean result = false;
         try {
             con = DBUtils.getConnection();
@@ -388,7 +419,7 @@ public class UserDAO {
     }
 
     //Set User Active = false
-    public boolean deleteUserById(String userId) throws SQLException, ClassNotFoundException {
+    public boolean deleteUserById(String userId) throws SQLException, NamingException {
         try {
             String sql = "update [User] set Active=? where UserId=?";
             con = DBUtils.getConnection();
@@ -402,7 +433,7 @@ public class UserDAO {
         }
     }
 
-    public boolean checkAccountPassword(String accountId, String password) throws ClassNotFoundException, SQLException {
+    public boolean checkAccountPassword(String accountId, String password) throws NamingException, SQLException {
         boolean check = false;
         try {
             con = DBUtils.getConnection();

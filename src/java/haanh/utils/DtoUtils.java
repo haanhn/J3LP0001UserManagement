@@ -7,7 +7,6 @@ package haanh.utils;
 
 import haanh.dto.PromotionDTO;
 import haanh.dto.UserDTO;
-import haanh.error.UserError;
 import java.sql.Date;
 
 /**

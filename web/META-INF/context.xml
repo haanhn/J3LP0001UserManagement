@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/J3LP0001UserManagement"/>
+<Context path="/J3LP0001UserManagement">
+<Resource name="J3LP0001UserManagementDS" auth="Container" type="javax.sql.DataSource"
+        driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+        url="jdbc:sqlserver://localhost:1433; databaseName=J3LP0001UserManagement"
+        username="sa" password="1234"/>
+</Context>

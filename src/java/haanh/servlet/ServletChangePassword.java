@@ -13,6 +13,7 @@ import haanh.utils.DataValidationUtils;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
 import java.sql.SQLException;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -46,7 +47,7 @@ public class ServletChangePassword extends HttpServlet {
                 url = UrlConstants.PAGE_CHANGE_PASSWORD;
                 processRequest(request);
             }
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (NamingException | SQLException e) {
             log(e.getMessage(), e);
         } 
         
@@ -93,7 +94,7 @@ public class ServletChangePassword extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void processRequest(HttpServletRequest request) throws SQLException, ClassNotFoundException {
+    private void processRequest(HttpServletRequest request) throws SQLException, NamingException {
         UserDTO user = ServletCenter.getCurrentUser(request);
 
         String oldPassword = request.getParameter("oldPassword");
@@ -120,7 +121,7 @@ public class ServletChangePassword extends HttpServlet {
         request.setAttribute(UrlConstants.ATTR_MESSAGE, msg);
     }
     
-    private static UserError checkPasswordChanging(String accountId, String oldPassword) throws SQLException, ClassNotFoundException {
+    private static UserError checkPasswordChanging(String accountId, String oldPassword) throws SQLException, NamingException {
         UserError error = null;
         UserDAO dao = new UserDAO();
         boolean correctPassword = dao.checkAccountPassword(accountId, oldPassword);

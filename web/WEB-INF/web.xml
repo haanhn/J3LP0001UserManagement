@@ -21,10 +21,6 @@
         <servlet-class>haanh.servlet.ServletDeleteAccount</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ServletHome</servlet-name>
-        <servlet-class>haanh.servlet.ServletHome</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ServletChangePassword</servlet-name>
         <servlet-class>haanh.servlet.ServletChangePassword</servlet-class>
     </servlet>
@@ -88,6 +84,14 @@
         <servlet-name>ServletAddUserToPromo</servlet-name>
         <servlet-class>haanh.servlet.ServletAddUserToPromo</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletGetUsersInPromo</servlet-name>
+        <servlet-class>haanh.servlet.ServletGetUsersInPromo</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletRemoveUserFromPromo</servlet-name>
+        <servlet-class>haanh.servlet.ServletRemoveUserFromPromo</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletCenter</servlet-name>
         <url-pattern>/ServletCenter</url-pattern>
@@ -107,10 +111,6 @@
     <servlet-mapping>
         <servlet-name>ServletDeleteAccount</servlet-name>
         <url-pattern>/ServletDeleteAccount</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ServletHome</servlet-name>
-        <url-pattern>/ServletHome</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ServletChangePassword</servlet-name>
@@ -176,6 +176,14 @@
         <servlet-name>ServletAddUserToPromo</servlet-name>
         <url-pattern>/ServletAddUserToPromo</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletGetUsersInPromo</servlet-name>
+        <url-pattern>/ServletGetUsersInPromo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletRemoveUserFromPromo</servlet-name>
+        <url-pattern>/ServletRemoveUserFromPromo</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
@@ -192,4 +200,10 @@
         <error-code>500</error-code>
         <location>/error.jsp</location>
     </error-page>
+    <resource-ref>
+        <res-ref-name>J3LP0001UserManagementDS</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+        <res-sharing-scope>Shareable</res-sharing-scope>
+    </resource-ref>
 </web-app>
