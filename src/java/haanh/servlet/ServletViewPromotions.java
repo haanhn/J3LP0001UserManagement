@@ -5,8 +5,8 @@
  */
 package haanh.servlet;
 
-import haanh.dao.PromotionDAO;
-import haanh.dto.PromotionDTO;
+import haanh.promotion.PromotionDAO;
+import haanh.promotion.PromotionDTO;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
 import java.sql.SQLException;

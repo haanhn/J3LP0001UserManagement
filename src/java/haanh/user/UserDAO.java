@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package haanh.dao;
+package haanh.user;
 
-import haanh.dto.UserDTO;
 import haanh.utils.DBUtils;
+import haanh.utils.DataValidationUtils;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,15 +27,17 @@ public class UserDAO {
     private ResultSet rs;
 
     //Login: only active user can login
-    public UserDTO login(String userId, String password) throws NamingException, SQLException {
+    public UserDTO login(String userId, String password) throws NamingException, SQLException, NoSuchAlgorithmException {
         UserDTO dto = null;
         try {
             con = DBUtils.getConnection();
-            String sql = "select Fullname, Email, Phone, Photo, RoleId from [User] "
+            String sql = "select Fullname, Email, Phone, Photo, Active, RoleId from [User] "
                     + "where UserId=? and Password=? and Active=?";
+            String hashedPassword = DataValidationUtils.getSHA256Hashed(password);
             stm = con.prepareStatement(sql);
             stm.setString(1, userId);
             stm.setString(2, password);
+            stm.setString(2, hashedPassword);
             stm.setBoolean(3, true);
             rs = stm.executeQuery();
             if (rs.next()) {
@@ -44,6 +47,7 @@ public class UserDAO {
                 dto.setEmail(rs.getString("Email"));
                 dto.setPhone(rs.getString("Phone"));
                 dto.setPhoto(rs.getString("Photo"));
+                dto.setActive(rs.getBoolean("Active"));
                 dto.setRoleId(rs.getString("RoleId"));
             }
         } finally {
@@ -64,7 +68,6 @@ public class UserDAO {
             rs = stm.executeQuery();
             while (rs.next()) {
                 String id = rs.getString("UserId");
-                System.out.println("User Id = " + id);
                 if (!id.equals(userId)) {
                     UserDTO dto = new UserDTO();
                     dto.setUserId(id);
@@ -278,7 +281,7 @@ public class UserDAO {
     public List<UserDTO> getListUsersNotInPromoAndNotAdmin(int promoId) throws SQLException, NamingException {
         List<UserDTO> list = new ArrayList<>();
         try {
-            String sql = "select UserId, Fullname, Photo from [User] "
+            String sql = "select UserId, Fullname, Photo, Active from [User] "
                     + "where [User].UserId not in "
                     + "(select UserId from UserPromotion where PromoId=? and Active=?) "
                     + "and [User].RoleId != ? "
@@ -295,6 +298,7 @@ public class UserDAO {
                 dto.setUserId(rs.getString("UserId"));
                 dto.setFullname(rs.getString("Fullname"));
                 dto.setPhoto(rs.getString("Photo"));
+                dto.setActive(rs.getBoolean("Active"));
                 list.add(dto);
             }
         } finally {
@@ -329,19 +333,19 @@ public class UserDAO {
         } finally {
             closeConnection();
         }
-        System.out.println("list " + list.size()) ;
         return list;
     }
     
-    public boolean insertUser(UserDTO dto) throws SQLException, NamingException {
+    public boolean insertUser(UserDTO dto) throws SQLException, NamingException, NoSuchAlgorithmException {
         boolean result = false;
         try {
             con = DBUtils.getConnection();
             String sql = "insert into [User](UserId, Password, Fullname, Email, Phone, Photo, Active, RoleId) "
                     + "values (?,?,?,?,?,?,?,?)";
+            String hashedPassword = DataValidationUtils.getSHA256Hashed(dto.getPassword());
             stm = con.prepareStatement(sql);
             stm.setString(1, dto.getUserId());
-            stm.setString(2, dto.getPassword());
+            stm.setString(2, hashedPassword);
             stm.setString(3, dto.getFullname());
             stm.setString(4, dto.getEmail());
             stm.setString(5, dto.getPhone());
@@ -380,14 +384,15 @@ public class UserDAO {
         return result;
     }
 
-    public int updatePassword(String userId, String password) throws SQLException, NamingException {
+    public int updatePassword(String userId, String password) throws SQLException, NamingException, NoSuchAlgorithmException {
         int result = DBUtils.CODE_FAILED;
         try {
             con = DBUtils.getConnection();
             String sql = "update [User] set Password=? "
                     + "where UserId=?";
+            String hashedPassword = DataValidationUtils.getSHA256Hashed(password);
             stm = con.prepareStatement(sql);
-            stm.setString(1, password);
+            stm.setString(1, hashedPassword);
             stm.setString(2, userId);
             int row = stm.executeUpdate();
             if (row > 0) {
@@ -433,15 +438,16 @@ public class UserDAO {
         }
     }
 
-    public boolean checkAccountPassword(String accountId, String password) throws NamingException, SQLException {
+    public boolean checkAccountPassword(String accountId, String password) throws NamingException, SQLException, NoSuchAlgorithmException {
         boolean check = false;
         try {
             con = DBUtils.getConnection();
             String sql = "select UserId from [User] "
                     + "where UserId=? and Password=? and Active=?";
+            String hashedPassword = DataValidationUtils.getSHA256Hashed(password);
             stm = con.prepareStatement(sql);
             stm.setString(1, accountId);
-            stm.setString(2, password);
+            stm.setString(2, hashedPassword);
             stm.setBoolean(3, true);
             rs = stm.executeQuery();
             if (rs.next()) {
@@ -465,17 +471,4 @@ public class UserDAO {
         }
     }
 
-//    private int getSQLMessage(Throwable ex) {
-//        int result = DBUtils.CODE_FAILED;
-//        String eMsg = ex.getMessage();
-//        if (eMsg.contains(DBUtils.ERR_MSG_DUPLICATE)) {
-//            result = DBUtils.CODE_DUPLICATE_UNIQUE_VALUE;
-//            if (eMsg.contains(DBUtils.ERR_MSG_USER_EMAIL_UNIQUE)) {
-//                result = DBUtils.CODE_DUPLICATE_USER_EMAIL;
-//            } else if (eMsg.contains(DBUtils.ERR_MSG_USER_PHONE_UNIQUE)) {
-//                result = DBUtils.CODE_DUPLICATE_USER_PHONE;
-//            }
-//        }
-//        return result;
-//    }
 }

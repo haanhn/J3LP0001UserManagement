@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package haanh.error;
+package haanh.promotion;
 
-import java.sql.Date;
+import java.io.Serializable;
 
 /**
  *
  * @author HaAnh
  */
-public class PromotionError {
+public class PromotionError implements Serializable {
     
     private Integer idErr;
     private String nameErr;

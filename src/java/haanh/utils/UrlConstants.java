@@ -13,7 +13,6 @@ public class UrlConstants {
     
     //Servlet
     public static final String SERVLET_CENTER = "ServletCenter";
-//    public static final String SERVLET_HOME = "ServletHome";
     public static final String SERVLET_LOGIN = "ServletLogin";
     public static final String SERVLET_LOG_OUT = "ServletLogOut";
     public static final String SERVLET_SEARCH_ACCOUNT = "ServletSearchAccount";
@@ -51,7 +50,7 @@ public class UrlConstants {
     public static final String PAGE_LIST_USER_NOT_IN_PROMO = "list-user-not-in-promo.jsp";
     public static final String PAGE_LIST_USER_IN_PROMO = "list-user-in-promo.jsp";
     public static final String PAGE_404 = "page-404.jsp";
-    public static final String PAGE_ERROR = "error.jsp";
+    public static final String PAGE_ERROR = "error.html";
     
     //Paths
     public static final String PATH_IMAGE = "";

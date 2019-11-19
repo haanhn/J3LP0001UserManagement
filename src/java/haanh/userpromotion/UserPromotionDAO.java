@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package haanh.dao;
+package haanh.userpromotion;
 
-import haanh.dto.UserPromotionDTO;
 import haanh.utils.DBUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -43,8 +42,6 @@ public class UserPromotionDAO {
     }
     
     public boolean insertUserPromo(String userId, int promoId, int rank) throws SQLException, NamingException {
-        System.out.println("userId " + userId);
-        System.out.println("promoId " + promoId);
         boolean result = false;
         try {
             con = DBUtils.getConnection();

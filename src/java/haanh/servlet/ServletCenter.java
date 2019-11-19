@@ -5,7 +5,7 @@
  */
 package haanh.servlet;
 
-import haanh.dto.UserDTO;
+import haanh.user.UserDTO;
 import haanh.utils.DBUtils;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
@@ -30,7 +30,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  * @author HaAnh
  */
 public class ServletCenter extends HttpServlet {
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,78 +43,26 @@ public class ServletCenter extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         String url = UrlConstants.PAGE_LOGIN;
         String action = request.getParameter("action");
         boolean activeSession = checkSession(request);
-
-        System.out.println("action = " + action);
+        
+        log("action = " + action);
 
         if (activeSession) {
-//            url = UrlConstants.SERVLET_HOME;
             url = UrlConstants.SERVLET_GET_USERS_BY_ROLE;
 
             if (action != null) {
-                //Users
-                if (action.equals("Search")) {
-                    url = UrlConstants.SERVLET_SEARCH_ACCOUNT;
-                } else if (action.equals("Delete")) {
-                    url = UrlConstants.SERVLET_DELETE_ACCOUNT;
-                } else if (action.equals("PageInsert")) {
-                    url = UrlConstants.SERVLET_GET_PAGE_INSERT;
-                } else if (action.equals("Insert")) {
-                    url = UrlConstants.SERVLET_INSERT_USER;
-                } else if (action.equals("View User Detail")) {
-                    url = UrlConstants.SERVLET_GET_USER_DETAIL;
-                } else if (action.equals("ViewProfile")) {
-                    url = UrlConstants.SERVLET_VIEW_CURRENT_USER_PROFILE;
-                } else if (action.equals("Update User")) {
-                    url = UrlConstants.SERVLET_UPDATE_USER;
-                } else if (action.equals("Log Out")) {
-                    url = UrlConstants.SERVLET_LOG_OUT;
-                } else if (action.equals("GetUsersByRole")) {
-                    url = UrlConstants.SERVLET_GET_USERS_BY_ROLE;
-                } else if (action.equals("Change My Password")) {
-                    url = UrlConstants.PAGE_CHANGE_PASSWORD;
-                } else if (action.equals("Change Password")) {
-                    url = UrlConstants.SERVLET_CHANGE_PASSWORD;
-                } else if (action.equals("ChangeUserPassword")) {
-                    url = UrlConstants.PAGE_CHANGE_USER_PASSWORD;
-                } else if (action.equals("Change User Password")) {
-                    url = UrlConstants.SERVLET_CHANGE_USER_PASSWORD;
-                } 
-                //Promotions
-                else if (action.equals("PageInsertPromotion")) {
-                    url = UrlConstants.PAGE_BACKGROUND;
-                    request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_INSERT_PROMO);
-                } else if (action.equals("ViewPromotions")) {
-                    url = UrlConstants.SERVLET_VIEW_PROMOTIONS;
-                } else if (action.equals("View Promotion Detail")) {
-                    url = UrlConstants.PAGE_BACKGROUND;
-                    request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_PROMO_DETAIL);
-                } else if (action.equals("Insert Promotion")) {
-                    url = UrlConstants.SERVLET_INSERT_PROMO;
-                } else if (action.equals("DeletePromo")) {
-                    url = UrlConstants.SERVLET_DELETE_PROMO;
-                } else if (action.equals("Update Promotion")) {
-                    url = UrlConstants.SERVLET_UPDATE_PROMO;
-                } else if (action.equals("GetUsersNotInPromo")) {
-                    url = UrlConstants.SERVLET_GET_LIST_USERS_NOT_IN_PROMO;
-                } else if (action.equals("Add User To Promotion")) {
-                    url = UrlConstants.SERVLET_ADD_USER_TO_PROMO;
-                } else if (action.equals("GetUsersInPromo")) {
-                    url = UrlConstants.SERVLET_GET_LIST_USERS_IN_PROMO;
-                } else if (action.equals("Remove User from Promotion")) {
-                    url = UrlConstants.SERVLET_REMOVE_USER_FROM_PROMO;
-                }
-            } else { 
+                url = getUrlDispatchWhenActionNotNull(action, request);
+            } else {
                 //action == null: check multipart/form-data
                 Map<String, String> params = new HashMap<>();
                 try {
                     FileItem photoItem = getParametersFormMultipart(request, params);
                     request.setAttribute(UrlConstants.ATTR_PARAMS, params);
                     request.setAttribute(UrlConstants.ATTR_PHOTO_ITEM, photoItem);
-                    
+
                     String actionMultiPart = params.get("action");
 
                     if (actionMultiPart != null) {
@@ -128,15 +76,14 @@ public class ServletCenter extends HttpServlet {
                     url = UrlConstants.PAGE_ERROR;
                     log(ex.getMessage(), ex);
                 }
-                
-                
+
             }
         } else { //User not login,  activeSesion == false
             if (action != null && action.equals("Login")) {
                 url = UrlConstants.SERVLET_LOGIN;
             }
         }
-        
+
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }
@@ -216,13 +163,13 @@ public class ServletCenter extends HttpServlet {
         String role = dto.getRoleId();
         return role;
     }
-       
+
     private FileItem getParametersFormMultipart(HttpServletRequest request,
-            Map<String, String> params) throws FileUploadException  {
+            Map<String, String> params) throws FileUploadException {
         FileItem photoItem = null;
-        
+
         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-        
+
         if (isMultipart) {
             FileItemFactory factory = new DiskFileItemFactory();
             ServletFileUpload upload = new ServletFileUpload(factory);
@@ -232,7 +179,6 @@ public class ServletCenter extends HttpServlet {
             while (ite.hasNext()) {
                 FileItem item = (FileItem) ite.next();
                 if (item.isFormField()) {
-                    System.out.println(item.getFieldName() + ":" + item.getString());
                     params.put(item.getFieldName(), item.getString());
 
                 } else {
@@ -241,5 +187,62 @@ public class ServletCenter extends HttpServlet {
             }
         }
         return photoItem;
+    }
+
+    private String getUrlDispatchWhenActionNotNull(String action, HttpServletRequest request) {
+        String url = UrlConstants.SERVLET_GET_USERS_BY_ROLE;
+        //Users
+        if (action.equals("Search")) {
+            url = UrlConstants.SERVLET_SEARCH_ACCOUNT;
+        } else if (action.equals("Delete")) {
+            url = UrlConstants.SERVLET_DELETE_ACCOUNT;
+        } else if (action.equals("PageInsert")) {
+            url = UrlConstants.SERVLET_GET_PAGE_INSERT;
+        } else if (action.equals("Insert")) {
+            url = UrlConstants.SERVLET_INSERT_USER;
+        } else if (action.equals("View User Detail")) {
+            url = UrlConstants.SERVLET_GET_USER_DETAIL;
+        } else if (action.equals("ViewProfile")) {
+            url = UrlConstants.SERVLET_VIEW_CURRENT_USER_PROFILE;
+        } else if (action.equals("Update User")) {
+            url = UrlConstants.SERVLET_UPDATE_USER;
+        } else if (action.equals("Log Out")) {
+            url = UrlConstants.SERVLET_LOG_OUT;
+        } else if (action.equals("GetUsersByRole")) {
+            url = UrlConstants.SERVLET_GET_USERS_BY_ROLE;
+        } else if (action.equals("Change My Password")) {
+            url = UrlConstants.PAGE_CHANGE_PASSWORD;
+        } else if (action.equals("Change Password")) {
+            url = UrlConstants.SERVLET_CHANGE_PASSWORD;
+        } else if (action.equals("PageChangeUserPassword")) {
+            url = UrlConstants.PAGE_CHANGE_USER_PASSWORD;
+        } else if (action.equals("Change User Password")) {
+            url = UrlConstants.SERVLET_CHANGE_USER_PASSWORD;
+        } 
+        //Promotions
+        else if (action.equals("PageInsertPromotion")) {
+            url = UrlConstants.PAGE_BACKGROUND;
+            request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_INSERT_PROMO);
+        } else if (action.equals("ViewPromotions")) {
+            url = UrlConstants.SERVLET_VIEW_PROMOTIONS;
+        } else if (action.equals("View Promotion Detail")) {
+            url = UrlConstants.PAGE_BACKGROUND;
+            request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_PROMO_DETAIL);
+        } else if (action.equals("Insert Promotion")) {
+            url = UrlConstants.SERVLET_INSERT_PROMO;
+        } else if (action.equals("DeletePromo")) {
+            url = UrlConstants.SERVLET_DELETE_PROMO;
+        } else if (action.equals("Update Promotion")) {
+            url = UrlConstants.SERVLET_UPDATE_PROMO;
+        } else if (action.equals("GetUsersNotInPromo")) {
+            url = UrlConstants.SERVLET_GET_LIST_USERS_NOT_IN_PROMO;
+        } else if (action.equals("Add User To Promotion")) {
+            url = UrlConstants.SERVLET_ADD_USER_TO_PROMO;
+        } else if (action.equals("GetUsersInPromo")) {
+            url = UrlConstants.SERVLET_GET_LIST_USERS_IN_PROMO;
+        } else if (action.equals("Remove User from Promotion")) {
+            url = UrlConstants.SERVLET_REMOVE_USER_FROM_PROMO;
+        }
+        return url;
     }
 }

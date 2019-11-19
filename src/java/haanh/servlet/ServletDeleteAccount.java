@@ -5,7 +5,7 @@
  */
 package haanh.servlet;
 
-import haanh.dao.UserDAO;
+import haanh.user.UserDAO;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
 import java.sql.SQLException;

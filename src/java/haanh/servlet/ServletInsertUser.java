@@ -5,14 +5,14 @@
  */
 package haanh.servlet;
 
-import haanh.dao.UserDAO;
-import haanh.dto.UserDTO;
-import haanh.error.UserError;
+import haanh.user.UserDAO;
+import haanh.user.UserDTO;
+import haanh.user.UserError;
 import haanh.utils.DataValidationUtils;
-import haanh.utils.DtoUtils;
 import haanh.utils.UrlConstants;
 import java.io.File;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.Map;
 import javax.naming.NamingException;
@@ -56,7 +56,7 @@ public class ServletInsertUser extends HttpServlet {
                     url = UrlConstants.PAGE_404;
                 }
             }
-        } catch (SQLException | NamingException ex) {
+        } catch (SQLException | NamingException | NoSuchAlgorithmException ex) {
             url = UrlConstants.PAGE_ERROR;
             log(ex.getMessage(), ex);
         } catch (Exception ex) {
@@ -142,7 +142,7 @@ public class ServletInsertUser extends HttpServlet {
 
     //Insert User
     private boolean insertUser(HttpServletRequest request,
-            Map<String, String> params) throws SQLException, NamingException {
+            Map<String, String> params) throws SQLException, NamingException, NoSuchAlgorithmException {
         UserError error;
         boolean result = false;
 
@@ -165,7 +165,7 @@ public class ServletInsertUser extends HttpServlet {
         error = validateInsertUserData(userId, password, confirm, fullname, email, phone);
 
         if (error == null) {
-            UserDTO dto = DtoUtils.getUser(userId, password, fullname, email, phone, null, active, role);
+            UserDTO dto = new UserDTO(userId, password, fullname, email, phone, null, active, role);
             UserDAO dao = new UserDAO();
             result = dao.insertUser(dto);
         } else {
@@ -214,7 +214,7 @@ public class ServletInsertUser extends HttpServlet {
         //validate password
         code = DataValidationUtils.validatePassword(password);
         if (code == UrlConstants.DATA_INVALID) {
-            error.setPasswordErr("Passwrod length 5-30");
+            error.setPasswordErr("Password length 5-30");
             err = true;
         }
         //validate confirm

@@ -10,6 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>User Management</title>
+        <link href="css/myStyle.css" type="text/css" rel="stylesheet">
     </head>
     <body>
         <h1>Login Page</h1>
@@ -32,6 +33,7 @@
                 </tr>
             </table>
         </form>
-        ${requestScope.error}
+        <p class="message">${message}</p>
+        <p class="message">${error}</p>
     </body>
 </html>

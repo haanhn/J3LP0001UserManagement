@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package haanh.dao;
+package haanh.role;
 
 import haanh.utils.DBUtils;
 import java.sql.Connection;

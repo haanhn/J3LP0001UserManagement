@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package haanh.dto;
+package haanh.user;
 
 import java.io.Serializable;
 
@@ -23,6 +23,17 @@ public class UserDTO implements Serializable {
     private String roleId;
 
     public UserDTO() {
+    }
+
+    public UserDTO(String userId, String password, String fullname, String email, String phone, String photo, Boolean active, String roleId) {
+        this.userId = userId;
+        this.password = password;
+        this.fullname = fullname;
+        this.email = email;
+        this.phone = phone;
+        this.photo = photo;
+        this.active = active;
+        this.roleId = roleId;
     }
 
     public String getUserId() {

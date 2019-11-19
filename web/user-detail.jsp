@@ -70,7 +70,7 @@
                     <td>
                         <select name="role">
                             <c:forEach items="${roles}" var="role">
-                                <c:if test="${role.key ==  user.roleId}">
+                                <c:if test="${role.key == user.roleId}">
                                     <option value="${role.key}" selected="selected" >
                                         ${role.value}
                                     </option>
@@ -95,12 +95,12 @@
         <p class="message">${message}</p>
         
         <form action="ServletCenter" method="POST">
-            <input type="hidden" value="${currentUser.userId}" name="userId" />
-            <input type="submit" value="ChangeUserPassword" name="action" />
+            <input type="hidden" value="${user.userId}" name="userId" />
+            <input type="submit" value="PageChangeUserPassword" name="action" />
         </form>
         
         <form action="ServletCenter" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="userId" value="${currentUser.userId}" />
+            <input type="hidden" name="userId" value="${user.userId}" />
             <input type="file" name="photo" />
             <input type="submit" value="ChangeUserPhoto" name="action" />
         </form>

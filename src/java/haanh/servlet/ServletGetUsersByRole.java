@@ -5,12 +5,13 @@
  */
 package haanh.servlet;
 
-import haanh.dao.RoleDAO;
-import haanh.dao.UserDAO;
-import haanh.dto.UserDTO;
+import haanh.role.RoleDAO;
+import haanh.user.UserDAO;
+import haanh.user.UserDTO;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.naming.NamingException;
@@ -51,7 +52,7 @@ public class ServletGetUsersByRole extends HttpServlet {
                     processAdminRequest(request);
                 } else {
                     //Non Admin Search
-                    
+                    processNonAdminRequest(request);
                 }
                 request.setAttribute(UrlConstants.ATTR_INCLUDED_PAGE, UrlConstants.PAGE_HOME);
 
@@ -121,6 +122,18 @@ public class ServletGetUsersByRole extends HttpServlet {
         Map<String, String> roles = roleDao.getAllNonAdminRoles();
 
         request.setAttribute(UrlConstants.ATTR_USERS, users);
+        request.setAttribute(UrlConstants.ATTR_ROLES, roles);
+    }
+    
+    private void processNonAdminRequest(HttpServletRequest request) throws NamingException, SQLException {
+        UserDTO dto = ServletCenter.getCurrentUser(request);
+        List<UserDTO> list = new ArrayList<>();
+        list.add(dto);
+        
+        RoleDAO roleDao = new RoleDAO();
+        Map<String, String> roles = roleDao.getAllNonAdminRoles();
+        
+        request.setAttribute(UrlConstants.ATTR_USERS, list);
         request.setAttribute(UrlConstants.ATTR_ROLES, roles);
     }
 }

@@ -5,13 +5,16 @@
  */
 package haanh.utils;
 
-import haanh.dao.UserDAO;
-import haanh.error.UserError;
+import haanh.user.UserDAO;
+import haanh.user.UserError;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -100,7 +103,7 @@ public class DataValidationUtils {
         //validate password
         code = DataValidationUtils.validatePassword(password);
         if (code == UrlConstants.DATA_INVALID) {
-            error.setNewPasswordErr("Passwrod length 5-30");
+            error.setNewPasswordErr("Password length 5-30");
             err = true;
         }
         //validate confirm
@@ -145,5 +148,11 @@ public class DataValidationUtils {
         } catch (ParseException e) {
             return null;
         }
+    }
+    
+    public static String getSHA256Hashed(String s) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] bytes = digest.digest(s.getBytes());        
+        return Base64.getEncoder().encodeToString(bytes);
     }
 }

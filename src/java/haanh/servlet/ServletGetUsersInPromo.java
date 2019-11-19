@@ -5,15 +5,12 @@
  */
 package haanh.servlet;
 
-import haanh.dao.UserDAO;
-import haanh.dto.UserDTO;
+import haanh.user.UserDAO;
+import haanh.user.UserDTO;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -43,7 +40,6 @@ public class ServletGetUsersInPromo extends HttpServlet {
         String url = UrlConstants.PAGE_BACKGROUND;
         int promoId = Integer.parseInt(request.getParameter("promoId"));
         
-        System.out.println("promoId " + promoId);
         try {
             UserDAO dao = new UserDAO();
             List<UserDTO> list = dao.getListUsersInPromo(promoId);

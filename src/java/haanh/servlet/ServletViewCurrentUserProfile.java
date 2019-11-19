@@ -5,7 +5,7 @@
  */
 package haanh.servlet;
 
-import haanh.dao.RoleDAO;
+import haanh.role.RoleDAO;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
 import java.sql.SQLException;

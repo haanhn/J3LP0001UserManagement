@@ -5,13 +5,14 @@
  */
 package haanh.servlet;
 
-import haanh.dao.UserDAO;
-import haanh.dto.UserDTO;
-import haanh.error.UserError;
+import haanh.user.UserDAO;
+import haanh.user.UserDTO;
+import haanh.user.UserError;
 import haanh.utils.DBUtils;
 import haanh.utils.DataValidationUtils;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
@@ -39,17 +40,15 @@ public class ServletChangePassword extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        String url = UrlConstants.PAGE_LOGIN;
-        boolean activeSession = ServletCenter.checkSession(request);
-
+        String url = UrlConstants.PAGE_CHANGE_PASSWORD;
         try {
-            if (activeSession) {
-                url = UrlConstants.PAGE_CHANGE_PASSWORD;
-                processRequest(request);
+            if (processRequest(request)) {
+                url = UrlConstants.PAGE_LOGIN;
             }
-        } catch (NamingException | SQLException e) {
+        } catch (NamingException | SQLException | NoSuchAlgorithmException e) {
             log(e.getMessage(), e);
-        } 
+            url = UrlConstants.PAGE_ERROR;
+        }
         
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
@@ -94,7 +93,8 @@ public class ServletChangePassword extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void processRequest(HttpServletRequest request) throws SQLException, NamingException {
+    private boolean processRequest(HttpServletRequest request) throws SQLException, NamingException, NoSuchAlgorithmException {
+        boolean result = false;
         UserDTO user = ServletCenter.getCurrentUser(request);
 
         String oldPassword = request.getParameter("oldPassword");
@@ -111,6 +111,7 @@ public class ServletChangePassword extends HttpServlet {
                 int code = dao.updatePassword(user.getUserId(), newPassword);
                 if (code == DBUtils.CODE_SUCCESS) {
                     msg = "Update Password successfully!";
+                    result = true;
                 } else if (code == DBUtils.CODE_FAILED) {
                     msg = "Update Password failed!";
                 }
@@ -119,9 +120,10 @@ public class ServletChangePassword extends HttpServlet {
         
         request.setAttribute(UrlConstants.ATTR_ERROR, error);
         request.setAttribute(UrlConstants.ATTR_MESSAGE, msg);
+        return result;
     }
     
-    private static UserError checkPasswordChanging(String accountId, String oldPassword) throws SQLException, NamingException {
+    private static UserError checkPasswordChanging(String accountId, String oldPassword) throws SQLException, NamingException, NoSuchAlgorithmException {
         UserError error = null;
         UserDAO dao = new UserDAO();
         boolean correctPassword = dao.checkAccountPassword(accountId, oldPassword);

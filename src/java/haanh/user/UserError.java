@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package haanh.error;
+package haanh.user;
+
+import java.io.Serializable;
 
 /**
  *
  * @author HaAnh
  */
-public class UserError {
+public class UserError implements Serializable {
     
     private String userIdErr;
     private String oldPasswordErr;

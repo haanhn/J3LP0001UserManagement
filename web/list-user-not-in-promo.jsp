@@ -38,7 +38,7 @@
                 </thead>
                 <tbody>
                 <form action="ServletCenter" method="POST">
-                    <c:forEach var="user" items="${users}" varStatus="counter">
+                    <c:forEach var="user" items="${users}" varStatus="counter"> 
                         <input type="hidden" name="promoId" value="${param.promoId}" />
                         <input type="hidden" name="promoName" value="${param.promoName}" />
                         <input type="hidden" name="userId" value="${user.userId}" />
@@ -58,9 +58,11 @@
                             <td>
                                 ${user.fullname}
                             </td>
+                            <c:if test="${user.active}">
                             <td>
                                 <input type="submit" value="Add User To Promotion" name="action" />
                             </td>
+                            </c:if>
                         </tr>
                     </c:forEach>
                 </form>
@@ -69,7 +71,7 @@
         </table>
     </c:if>
     <c:if test="${empty users}">
-        <div class="message">All Users added to this Promotion</div>
+        <div class="message">No more Users to be added to this Promotion</div>
     </c:if>
 
     <div class="message">${message}</div>

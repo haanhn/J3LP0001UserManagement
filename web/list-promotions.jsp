@@ -4,6 +4,7 @@
     Author     : HaAnh
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -33,12 +34,14 @@
                     <tr>
                         <td>${counter.count}</td>
                         <td>
+                           <fmt:formatDate value="${promo.fromDate}"  pattern="dd/MM/yyyy" var="from" />
+                           <fmt:formatDate value="${promo.toDate}"  pattern="dd/MM/yyyy" var="to" />
                             ${promo.name}
                             <input type="hidden" name="id" value="${promo.id}" />
                             <input type="hidden" name="name" value="${promo.name}" />
                             <input type="hidden" name="description" value="${promo.description}" />
-                            <input type="hidden" name="fromDate" value="${promo.fromDate}" />
-                            <input type="hidden" name="toDate" value="${promo.toDate}" />
+                            <input type="hidden" name="fromDate" value="${from}" />
+                            <input type="hidden" name="toDate" value="${to}" />
                             <input type="hidden" name="active" value="${promo.active}" />
                         </td>
                         <td>${promo.fromDate}</td>
@@ -68,12 +71,14 @@
                             <input type="submit" value="View Promotion Detail" name="action" />
                         </td>
                         <td>
+                            <c:if test="${promo.active}">    
                             <c:url var="getUserNotInPromoLink" value="ServletCenter">
                                 <c:param name="action" value="GetUsersNotInPromo"/>
                                 <c:param name="promoId" value="${promo.id}"/>
                                 <c:param name="promoName" value="${promo.name}"/>
                             </c:url>
                             <a href="${getUserNotInPromoLink}">Add User</a>
+                            </c:if>
                         </td>
                         <td>
                             <c:url var="getUserInPromoLink" value="ServletCenter">

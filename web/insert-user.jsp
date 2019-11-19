@@ -13,7 +13,7 @@
         <title>User Management</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h2>Insert User </h2>
         <c:set var="e" value="${error}"/>
         
         <form action="ServletCenter" method="POST" enctype="multipart/form-data">
@@ -21,42 +21,42 @@
                 <tr>
                     <th>User Id</th>
                     <td>
-                        <input type="text" name="userId" value="${param.userId}" />
-                        <div class="show-input-err">${e.userIdErr}</div>
+                        <input type="text" name="userId" value="${params.userId}" />
+                        <div class="show-input-err">${e.userIdErr}</div> 
                     </td>
                 </tr>
                 <tr>
                     <th>Password</th>
                     <td>
-                        <input type="password" name="password" value="${param.password}"/>
+                        <input type="password" name="password" value="${params.password}"/>
                         <div class="show-input-err">${e.passwordErr}</div>
                     </td>
                 </tr>
                 <tr>
                     <th>Confirm</th>
                     <td>
-                        <input type="password" name="confirm" value="${param.confirm}" />
+                        <input type="password" name="confirm" value="${params.confirm}" />
                         <div class="show-input-err">${e.confirmErr}</div>
                     </td>
                 </tr>
                 <tr>
                     <th>Fullname</th>
                     <td>
-                        <input type="text" name="fullname" value="${param.fullname}" />
+                        <input type="text" name="fullname" value="${params.fullname}" />
                         <div class="show-input-err">${e.fullnameErr}</div>
                     </td>
                 </tr>
                 <tr>
                     <th>Email</th>
                     <td>
-                        <input type="text" name="email" value="${param.email}" />
+                        <input type="text" name="email" value="${params.email}" />
                         <div class="show-input-err">${e.emailErr}</div>
                     </td>
                 </tr>
                 <tr>
                     <th>Phone</th>
                     <td>
-                        <input type="text" name="phone" value="${param.phone}" />
+                        <input type="text" name="phone" value="${params.phone}" />
                         <div class="show-input-err">${e.phoneErr}</div>
                     </td>
                 </tr>

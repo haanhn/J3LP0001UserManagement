@@ -7,7 +7,6 @@ package haanh.servlet;
 
 import haanh.utils.UrlConstants;
 import java.io.IOException;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -40,8 +39,6 @@ public class ServletLogOut extends HttpServlet {
         }
         
         response.sendRedirect(url);
-//        RequestDispatcher rd = request.getRequestDispatcher(url);
-//        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

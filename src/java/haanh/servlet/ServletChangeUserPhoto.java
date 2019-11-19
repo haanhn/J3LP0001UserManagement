@@ -5,9 +5,9 @@
  */
 package haanh.servlet;
 
-import haanh.dao.RoleDAO;
-import haanh.dao.UserDAO;
-import haanh.dto.UserDTO;
+import haanh.role.RoleDAO;
+import haanh.user.UserDAO;
+import haanh.user.UserDTO;
 import static haanh.servlet.ServletInsertUser.insertPhoto;
 import static haanh.servlet.ServletInsertUser.updateUserPhotoData;
 import haanh.utils.UrlConstants;

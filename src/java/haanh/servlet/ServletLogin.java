@@ -5,10 +5,11 @@
  */
 package haanh.servlet;
 
-import haanh.dao.UserDAO;
-import haanh.dto.UserDTO;
+import haanh.user.UserDAO;
+import haanh.user.UserDTO;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
@@ -50,9 +51,10 @@ public class ServletLogin extends HttpServlet {
                 session.setAttribute(UrlConstants.ATTR_CURRENT_USER, dto);
                 url = UrlConstants.SERVLET_GET_USERS_BY_ROLE;
             } else {
-                request.setAttribute("error", "Wrong User Id or Password, please try again");
+                request.setAttribute(UrlConstants.ATTR_ERROR, "Wrong User Id or Password, please try again");
             }
-        } catch (NamingException | SQLException ex) {
+        } catch (NamingException | SQLException | NoSuchAlgorithmException ex) {
+            url = UrlConstants.PAGE_ERROR;
             log(ex.getMessage(), ex);
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);

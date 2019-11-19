@@ -5,11 +5,10 @@
  */
 package haanh.servlet;
 
-import haanh.dao.UserDAO;
-import haanh.dto.UserDTO;
-import haanh.error.UserError;
+import haanh.user.UserDAO;
+import haanh.user.UserDTO;
+import haanh.user.UserError;
 import haanh.utils.DataValidationUtils;
-import haanh.utils.DtoUtils;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -39,16 +38,10 @@ public class ServletUpdateUser extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        String url = UrlConstants.PAGE_LOGIN;
-        boolean activeSession = ServletCenter.checkSession(request);
-
-        System.out.println("update  sssssev");
-
+        String url = UrlConstants.SERVLET_GET_USER_DETAIL;
+        
         try {
-            if (activeSession) {
-                url = UrlConstants.SERVLET_GET_USER_DETAIL;
-                processAdminRequest(request);
-            }
+            processRequest(request);
         } catch (SQLException | NamingException ex) {
             url = UrlConstants.PAGE_ERROR;
             log(ex.getMessage(), ex);
@@ -56,7 +49,7 @@ public class ServletUpdateUser extends HttpServlet {
             url = UrlConstants.PAGE_ERROR;
             log(ex.getMessage(), ex);
         }
-        
+
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }
@@ -73,7 +66,7 @@ public class ServletUpdateUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        ServletUpdateUser.this.processRequest(request, response);
     }
 
     /**
@@ -87,7 +80,7 @@ public class ServletUpdateUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        ServletUpdateUser.this.processRequest(request, response);
     }
 
     /**
@@ -100,7 +93,7 @@ public class ServletUpdateUser extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private boolean processAdminRequest(HttpServletRequest request) throws SQLException, NamingException {
+    private boolean processRequest(HttpServletRequest request) throws SQLException, NamingException {
         boolean result = false;
         //Get parameters & set url
         String userId = request.getParameter("userId").trim();
@@ -112,13 +105,22 @@ public class ServletUpdateUser extends HttpServlet {
         //Validate Input
         UserError error = validateUserData(userId, fullname, email, phone);
         if (error == null) {
-            UserDTO dto = DtoUtils.getUser(userId, null, fullname, email, phone, null, null, role);
+            UserDTO dto = new UserDTO(userId, null, fullname, email, phone, null, null, role);
             UserDAO dao = new UserDAO();
             result = dao.updateUser(dto);
+            
+            UserDTO currentUser = ServletCenter.getCurrentUser(request);
+            
+            //check if update current user profile
+            if (userId.equals(currentUser.getUserId())) {
+                currentUser.setFullname(fullname);
+                currentUser.setEmail(email);
+                currentUser.setPhone(phone);
+            }
         } else {
             request.setAttribute(UrlConstants.ATTR_ERROR, error);
         }
-        
+
         if (result) {
             request.setAttribute(UrlConstants.ATTR_MESSAGE, "Update User successfully!");
         } else {
@@ -126,7 +128,7 @@ public class ServletUpdateUser extends HttpServlet {
         }
         return result;
     }
-    
+
     private UserError validateUserData(String userId, String fullname, String email, String phone)
             throws NamingException, SQLException {
         UserError error = new UserError();

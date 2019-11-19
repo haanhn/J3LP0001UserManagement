@@ -13,7 +13,7 @@
         <link href="css/myStyle.css" type="text/css" rel="stylesheet">
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Change User Password</h1>
         <form action="ServletCenter" method="POST">
             <table border="0">
                 <tr>
@@ -45,6 +45,6 @@
             </table>
         </form>
         <p class="message">${message}</p>
-        
+        <a href="ServletCenter">Back to Home</a>
     </body>
 </html>

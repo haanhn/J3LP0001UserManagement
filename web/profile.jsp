@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>My profile</title>
     </head>
     <body>
         <h2>My Profile</h2>
@@ -30,6 +30,7 @@
                     <td>
                         ${currentUser.userId}
                         <input type="hidden" name="userId" value="${currentUser.userId}" />
+                        <input type="hidden" name="role" value="${currentUser.roleId}" />
                     </td>
                 </tr>
                 <tr>
@@ -74,7 +75,7 @@
         </form>
         
         <form action="ServletCenter" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="userId" value="${user.userId}" />
+            <input type="hidden" name="userId" value="${currentUser.userId}" />
             <input type="file" name="photo" />
             <input type="submit" value="ChangeUserPhoto" name="action" />
         </form>

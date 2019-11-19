@@ -5,12 +5,13 @@
  */
 package haanh.servlet;
 
-import haanh.dao.UserDAO;
-import haanh.error.UserError;
+import haanh.user.UserDAO;
+import haanh.user.UserError;
 import haanh.utils.DBUtils;
 import haanh.utils.DataValidationUtils;
 import haanh.utils.UrlConstants;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
@@ -49,7 +50,7 @@ public class ServletChangeUserPassword extends HttpServlet {
                     processAdminRequest(request);
                 }
             }
-        } catch (SQLException | NamingException ex) {
+        } catch (SQLException | NamingException | NoSuchAlgorithmException ex) {
             url = UrlConstants.PAGE_ERROR;
             log(ex.getMessage(), ex);
         }
@@ -98,7 +99,7 @@ public class ServletChangeUserPassword extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void processAdminRequest(HttpServletRequest request) throws SQLException, NamingException {
+    private void processAdminRequest(HttpServletRequest request) throws SQLException, NamingException, NoSuchAlgorithmException {
 
         String userId = request.getParameter("userId");
         String newPassword = request.getParameter("newPassword");

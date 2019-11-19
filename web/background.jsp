@@ -40,6 +40,7 @@
                 </c:url>
                 <a href="${viewUsersLink}">View Users</a>
             </li>
+            
             <!--For Admin-->
             <c:if test="${currentUser.roleId eq 'AD001'}">
                 <li>
